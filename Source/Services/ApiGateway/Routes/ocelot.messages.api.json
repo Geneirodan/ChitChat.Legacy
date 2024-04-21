@@ -1,0 +1,39 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "messages-api",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/messages/{everything}",
+      "SwaggerKey": "messages"
+    },
+    {
+      "DownstreamPathTemplate": "/swagger/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "messages-api",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/swagger/messages/{everything}"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "messages",
+      "Config": [
+        {
+          "Name": "Messages API",
+          "Version": "v1",
+          "Url": "http://messages-api/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

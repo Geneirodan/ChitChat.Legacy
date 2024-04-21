@@ -1,0 +1,18 @@
+﻿services:
+  messages:
+    image: messages
+    build:
+      context: .
+      dockerfile: Source/Services/Messages/WebApi/Dockerfile
+
+  gateway:
+    image: gateway
+    build:
+      context: .
+      dockerfile: Source/Services/ApiGateway/Dockerfile
+
+  identity:
+    image: identity
+    build:
+      context: .
+      dockerfile: Source/Services/Identity/Dockerfile

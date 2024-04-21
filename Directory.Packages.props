@@ -1,0 +1,15 @@
+<!-- For more info on central package management go to https://devblogs.microsoft.com/nuget/introducing-central-package-management/ -->
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="MMLib.SwaggerForOcelot" Version="8.2.0" />
+    <PackageVersion Include="Ocelot" Version="23.2.2" />
+    <PackageVersion Include="Ocelot.Provider.Polly" Version="23.2.2" />
+  </ItemGroup>
+</Project>
