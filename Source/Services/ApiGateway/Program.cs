@@ -26,6 +26,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerForOcelotUI(options => options.PathToSwaggerGenerator = "/swagger/docs");
 }
 
-await app.UseOcelot();
+await app.UseOcelot().ConfigureAwait(false);
 
-await app.RunAsync();
+await app.RunAsync().ConfigureAwait(false);
