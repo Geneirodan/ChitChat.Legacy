@@ -5,4 +5,4 @@ internal sealed record TwoFactorResponse(
     int RecoveryCodesLeft,
     bool IsTwoFactorEnabled,
     bool IsMachineRemembered,
-    string[]? RecoveryCodes);
+    IEnumerable<string>? RecoveryCodes);

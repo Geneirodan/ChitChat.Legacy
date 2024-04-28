@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace Identity.Requests;
 
 internal sealed record TwoFactorRequest(
@@ -6,3 +8,13 @@ internal sealed record TwoFactorRequest(
     bool ResetSharedKey = false,
     bool ResetRecoveryCodes = false,
     bool ForgetMachine = false);
+
+internal sealed class TwoFactorRequestValidator : AbstractValidator<TwoFactorRequest>
+{
+    public TwoFactorRequestValidator() =>
+        When(x => x.Enable == true, () =>
+        {
+            RuleFor(x => x.ResetSharedKey).Empty();
+            RuleFor(x => x.TwoFactorCode).NotEmpty();
+        });
+}

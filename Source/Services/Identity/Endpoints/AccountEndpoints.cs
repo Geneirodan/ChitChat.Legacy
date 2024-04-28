@@ -45,7 +45,8 @@ internal static class AccountEndpoints
         [FromServices] IEmailSender emailSender
     )
     {
-        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user) return TypedResults.NotFound();
+        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user)
+            return TypedResults.NotFound();
 
         var (newEmail, returnUrl) = request;
 
@@ -68,7 +69,7 @@ internal static class AccountEndpoints
         [FromServices] UserManager<User> userManager
     )
     {
-        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user) 
+        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user)
             return TypedResults.NotFound();
 
         var info = await userManager.CreateInfoResponseAsync(user).ConfigureAwait(false);
@@ -82,39 +83,34 @@ internal static class AccountEndpoints
     )
     {
         var userManager = signInManager.UserManager;
-        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user) return TypedResults.NotFound();
+        if (await userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false) is not { } user)
+            return TypedResults.NotFound();
 
-        if (request.Enable == true)
+        var (enable, twoFactorCode, resetSharedKey, resetRecoveryCodes, forgetMachine) = request;
+        
+        if (enable == true)
         {
-            //TODO: Fix it
-            if (request.ResetSharedKey)
-                return CreateValidationProblem("CannotResetSharedKeyAndEnable",
-                    "Resetting the 2fa shared key must disable 2fa until a 2fa token based on the new shared key is validated.");
-            if (string.IsNullOrEmpty(request.TwoFactorCode))
-                return CreateValidationProblem("RequiresTwoFactor",
-                    "No 2fa token was provided by the request. A valid 2fa token is required to enable 2fa.");
-            if (!await userManager.VerifyTwoFactorTokenAsync(user,
-                    userManager.Options.Tokens.AuthenticatorTokenProvider, request.TwoFactorCode).ConfigureAwait(false))
-                return CreateValidationProblem("InvalidTwoFactorCode",
-                    "The 2fa token provided by the request was invalid. A valid 2fa token is required to enable 2fa.");
-
-
+            var tokenProvider = userManager.Options.Tokens.AuthenticatorTokenProvider;
+            if (!await userManager.VerifyTwoFactorTokenAsync(user, tokenProvider, twoFactorCode!).ConfigureAwait(false))
+                return TypedResults.ValidationProblem(new Dictionary<string, string[]> { { "InvalidTwoFactorCode", ["The 2fa token provided by the request was invalid. A valid 2fa token is required to enable 2fa."] } });
+            
             await userManager.SetTwoFactorEnabledAsync(user, true).ConfigureAwait(false);
         }
-        else if (request.Enable == false || request.ResetSharedKey)
+        else if (enable == false || resetSharedKey)
             await userManager.SetTwoFactorEnabledAsync(user, false).ConfigureAwait(false);
 
-        if (request.ResetSharedKey) await userManager.ResetAuthenticatorKeyAsync(user).ConfigureAwait(false);
+        if (resetSharedKey) await userManager.ResetAuthenticatorKeyAsync(user).ConfigureAwait(false);
 
         string[]? recoveryCodes = null;
-        if (request.ResetRecoveryCodes ||
-            (request.Enable == true && await userManager.CountRecoveryCodesAsync(user).ConfigureAwait(false) == 0))
+        if (resetRecoveryCodes ||
+            (enable == true && await userManager.CountRecoveryCodesAsync(user).ConfigureAwait(false) == 0))
         {
-            var recoveryCodesEnumerable = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10).ConfigureAwait(false);
+            var recoveryCodesEnumerable =
+                await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10).ConfigureAwait(false);
             recoveryCodes = recoveryCodesEnumerable?.ToArray();
         }
 
-        if (request.ForgetMachine) await signInManager.ForgetTwoFactorClientAsync().ConfigureAwait(false);
+        if (forgetMachine) await signInManager.ForgetTwoFactorClientAsync().ConfigureAwait(false);
 
         var key = await userManager.GetAuthenticatorKeyAsync(user).ConfigureAwait(false);
         if (string.IsNullOrEmpty(key))
@@ -126,15 +122,13 @@ internal static class AccountEndpoints
                 throw new NotSupportedException("The user manager must produce an authenticator key after reset.");
         }
 
-        var recoveryCodesLeft = recoveryCodes?.Length ?? await userManager.CountRecoveryCodesAsync(user).ConfigureAwait(false);
+        var recoveryCodesLeft = recoveryCodes?.Length ??
+                                await userManager.CountRecoveryCodesAsync(user).ConfigureAwait(false);
         var isTwoFactorEnabled = await userManager.GetTwoFactorEnabledAsync(user).ConfigureAwait(false);
         var isMachineRemembered = await signInManager.IsTwoFactorClientRememberedAsync(user).ConfigureAwait(false);
         var twoFactorResponse = new TwoFactorResponse(key, recoveryCodesLeft, isTwoFactorEnabled, isMachineRemembered,
             recoveryCodes);
         return TypedResults.Ok(twoFactorResponse);
-
-        ValidationProblem CreateValidationProblem(string errorCode, string errorDescription) =>
-            TypedResults.ValidationProblem(new Dictionary<string, string[]> { { errorCode, [errorDescription] } });
     }
 
     private static async Task<InfoResponse> CreateInfoResponseAsync(

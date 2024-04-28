@@ -1,12 +1,15 @@
+using SharpGrip.FluentValidation.AutoValidation.Endpoints.Extensions;
+
 namespace Identity.Endpoints;
 
 internal static class IdentityEndpoints
 {
     public static void MapIdentity(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapAuth();
-        endpoints.MapEmail();
-        endpoints.MapPassword();
-        endpoints.MapAccount();
+        var group = endpoints.MapGroup(string.Empty).AddFluentValidationAutoValidation();
+        group.MapAuth();
+        group.MapEmail();
+        group.MapPassword();
+        group.MapAccount();
     }
 }

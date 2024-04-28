@@ -1,9 +1,12 @@
+using System.Reflection;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Identity.Endpoints;
 using Identity.Options;
 using Identity.Persistence;
 using Identity.Services;
 using Microsoft.AspNetCore.Identity;
+using SharpGrip.FluentValidation.AutoValidation.Endpoints.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -16,11 +19,13 @@ services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectio
 services.AddHealthChecks()
     .AddDbContextCheck<ApplicationContext>();
 
-services.AddIdentity<User, IdentityRole<Guid>>()
+services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders();
 
 services
+    .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true)
+    .AddFluentValidationAutoValidation()
     .AddAuthenticationAndAuthorization(configuration.GetSection("Jwt"))
     .AddSwagger()
     .AddProblemDetails()
