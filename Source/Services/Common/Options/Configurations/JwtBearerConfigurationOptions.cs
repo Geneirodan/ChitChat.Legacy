@@ -6,10 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Common.Options.Configurations;
 
-public sealed class JwtBearerConfigurationOptions(IOptions<JwtOptions> options) : IConfigureOptions<JwtBearerOptions>
+public sealed class JwtBearerConfigurationOptions(IOptions<JwtOptions> options) : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly JwtOptions _options = options.Value;
-    public void Configure(JwtBearerOptions options)
+    public void Configure(JwtBearerOptions options) => Configure(JwtBearerDefaults.AuthenticationScheme, options);
+
+    public void Configure(string? name, JwtBearerOptions options)
     {
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters

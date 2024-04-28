@@ -31,8 +31,8 @@ public static class ServiceCollectionExtensions
             .AddPolicy(nameof(Admin), builder => builder.RequireRole(nameof(Admin)))
             .AddPolicy(nameof(User), builder => builder.RequireRole(nameof(User)));
             
-        return services.AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerConfigurationOptions>()
-            .Configure<JwtOptions>(section);
+        return services.Configure<JwtOptions>(section)
+            .AddSingleton<IConfigureOptions<JwtBearerOptions>, JwtBearerConfigurationOptions>();
     }
 
     public static IServiceCollection AddSwagger(this IServiceCollection services) => 
