@@ -41,11 +41,7 @@ public static class ServiceCollectionExtensions
             .AddSwaggerGen()
             .AddSingleton<IConfigureOptions<SwaggerGenOptions>, SwaggerConfigurationsOptions>();
     
-    public static IServiceCollection AddValidatorsAndMediatR(this IServiceCollection services, params Assembly[] assemblies)
-    {
-
-        services.AddValidatorsFromAssemblies(assemblies);
-
+    public static IServiceCollection AddMediatR(this IServiceCollection services, params Assembly[] assemblies) =>
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssemblies(assemblies);
             cfg.AddRequestPreProcessor(typeof(IRequestPreProcessor<>), typeof(LoggingBehavior<>));
@@ -54,7 +50,4 @@ public static class ServiceCollectionExtensions
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
         });
-
-        return services;
-    }
 }
