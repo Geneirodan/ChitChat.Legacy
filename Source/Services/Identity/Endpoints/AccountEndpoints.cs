@@ -14,11 +14,12 @@ internal static class AccountEndpoints
 {
     public static void MapAccount(this IEndpointRouteBuilder endpoints)
     {
-        var accountGroup = endpoints.MapGroup("account").RequireAuthorization();
-        accountGroup.MapPost("2fa", TwoFactorAuth);
-        accountGroup.MapGet("info", Info);
-        accountGroup.MapPost("changeEmail", ChangeEmail);
-        accountGroup.MapPost("changePassword", ChangePassword);
+        const string groupName = "Account";
+        var accountGroup = endpoints.MapGroup(groupName).WithTags(groupName).RequireAuthorization();
+        accountGroup.MapPost(nameof(TwoFactor), TwoFactor);
+        accountGroup.MapGet(nameof(Info), Info);
+        accountGroup.MapPost(nameof(ChangeEmail), ChangeEmail);
+        accountGroup.MapPost(nameof(ChangePassword), ChangePassword);
     }
 
     private static async Task<Results<Ok, ValidationProblem, NotFound>> ChangePassword(
@@ -76,7 +77,7 @@ internal static class AccountEndpoints
         return TypedResults.Ok(info);
     }
 
-    private static async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>> TwoFactorAuth(
+    private static async Task<Results<Ok<TwoFactorResponse>, ValidationProblem, NotFound>> TwoFactor(
         ClaimsPrincipal claimsPrincipal,
         [FromBody] TwoFactorRequest request,
         [FromServices] SignInManager<User> signInManager

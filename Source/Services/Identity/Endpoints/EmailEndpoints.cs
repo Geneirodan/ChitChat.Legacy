@@ -13,12 +13,13 @@ internal static class EmailEndpoints
 {
     public static void MapEmail(this IEndpointRouteBuilder endpoints)
     {
-        var routeGroup = endpoints.MapGroup("email");
-        routeGroup.MapGet("confirm", ConfirmEmail);
-        routeGroup.MapPost("resend", ResendConfirmationEmail);
+        const string groupName = "Email";
+        var routeGroup = endpoints.MapGroup(groupName).WithTags(groupName);
+        routeGroup.MapGet(nameof(Confirm), Confirm);
+        routeGroup.MapPost(nameof(Resend), Resend);
     }
 
-    private static async Task<Ok> ResendConfirmationEmail(
+    private static async Task<Ok> Resend(
         [FromBody] ResendConfirmationEmailRequest request,
         [FromServices] UserManager<User> userManager,
         [FromServices] IEmailSender emailSender
@@ -34,7 +35,7 @@ internal static class EmailEndpoints
         return TypedResults.Ok();
     }
 
-    private static async Task<Results<Ok, BadRequest>> ConfirmEmail(
+    private static async Task<Results<Ok, BadRequest>> Confirm(
         [FromQuery] string email,
         [FromQuery] string code,
         [FromQuery] string? changedEmail,

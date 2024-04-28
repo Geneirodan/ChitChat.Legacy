@@ -14,12 +14,13 @@ internal static class PasswordEndpoints
 {
     public static void MapPassword(this IEndpointRouteBuilder endpoints)
     {
-        var routeGroup = endpoints.MapGroup("password");
-        routeGroup.MapPost("forgot", ForgotPassword);
-        routeGroup.MapPost("reset", ResetPassword);
+        const string groupName = "Password";
+        var routeGroup = endpoints.MapGroup(groupName).WithTags(groupName);
+        routeGroup.MapPost(nameof(Forgot), Forgot);
+        routeGroup.MapPost(nameof(Reset), Reset);
     }
 
-    private static async Task<Results<Ok, ValidationProblem>> ResetPassword(
+    private static async Task<Results<Ok, ValidationProblem>> Reset(
         [FromBody] ResetPasswordRequest resetRequest,
         [FromServices] UserManager<User> userManager
     )
@@ -45,7 +46,7 @@ internal static class PasswordEndpoints
         return result.Succeeded ? TypedResults.Ok() : result.ToValidationProblem();
     }
 
-    private static async Task<Results<Ok, ValidationProblem>> ForgotPassword(
+    private static async Task<Results<Ok, ValidationProblem>> Forgot(
         [FromBody] ForgotPasswordRequest request,
         [FromServices] UserManager<User> userManager,
         [FromServices] IEmailSender emailSender

@@ -14,10 +14,11 @@ internal static class AuthEndpoints
 {
     public static void MapAuth(this IEndpointRouteBuilder endpoints)
     {
-        var routeGroup = endpoints.MapGroup("auth");
-        routeGroup.MapPost("register", Register);
-        routeGroup.MapPost("login", Login);
-        routeGroup.MapPost("refresh", Refresh);
+        const string groupName = "Auth";
+        var routeGroup = endpoints.MapGroup(groupName).WithTags(groupName);
+        routeGroup.MapPost(nameof(Register), Register);
+        routeGroup.MapPost(nameof(Login), Login);
+        routeGroup.MapPost(nameof(Refresh), Refresh);
     }
 
     private static async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>> Refresh(
