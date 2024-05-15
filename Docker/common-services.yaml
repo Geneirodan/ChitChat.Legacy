@@ -1,0 +1,15 @@
+﻿services:
+  
+  authorized:
+    environment:
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__Issuer: ${JWT_ISSUER}
+  
+  broker:
+    extends:
+      service: authorized
+    environment:
+      RabbitMQ__Host: rabbitmq
+      RabbitMQ__User: ${RABBITMQ_USER}
+      RabbitMQ__Pass: ${RABBITMQ_PASS}

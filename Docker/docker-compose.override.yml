@@ -1,0 +1,81 @@
+﻿services:
+  
+  gateway:
+    ports:
+      - 8080:80
+  
+  messages.hub:
+    environment:
+      - ASPNETCORE_ENVIRONMENT
+    extends:
+      file: common-services.yaml
+      service: broker
+    ports:
+      - 23454:8080
+  
+  messages.queries:
+    environment:
+      - ASPNETCORE_ENVIRONMENT
+      - ConnectionStrings__Elastic=http://elasticsearch:9200
+    extends:
+      file: common-services.yaml
+      service: broker
+    ports:
+      - 23453:8080
+  
+  messages.commands:
+    environment:
+      - ASPNETCORE_ENVIRONMENT
+      - ConnectionStrings__Database=Host=postgres;Port=5432;Database=Messages;UserName=postgres;Password=postgres
+    extends:
+      file: common-services.yaml
+      service: broker
+    ports:
+      - 23452:8080
+
+  profile:
+    environment:
+      - ASPNETCORE_ENVIRONMENT
+      - ConnectionStrings__Database=Host=postgres;Port=5432;Database=Profiles;UserName=postgres;Password=postgres
+    extends:
+      file: common-services.yaml
+      service: authorized
+    ports:
+      - 23451:8080
+  
+  identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT
+      - ConnectionStrings__Database=Host=postgres;Port=5432;Database=Identity;UserName=postgres;Password=postgres
+    extends:
+      file: common-services.yaml
+      service: authorized
+    ports:
+      - 23450:8080
+  
+  postgres:
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+  rabbitmq:
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    ports:
+      # The standard AMQP protocol port
+      - 5672:5672
+      # HTTP management UI
+      - 15672:15672
+  
+  elasticsearch:
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      ES_JAVA_OPTS: -Xms1024m -Xmx1024m

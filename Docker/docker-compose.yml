@@ -1,0 +1,63 @@
+﻿services:
+  
+  gateway:
+    image: ${DOCKER_REGISTRY-}gateway
+    build:
+      context: ../Source/Services/Nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - identity
+      - messages.queries
+      - messages.hub
+      - messages.commands
+  
+  messages.hub:
+    image: ${DOCKER_REGISTRY-}messages.hub
+    build:
+      context: ../Source/Services/Messages
+      dockerfile: SignalRNotifier/Dockerfile
+    depends_on:
+      - rabbitmq
+  
+  messages.queries:
+    image: ${DOCKER_REGISTRY-}messages.queries
+    build:
+      context: ../Source/Services/Messages/Queries
+      dockerfile: Presentation/Dockerfile
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+        
+  messages.commands:
+    image: ${DOCKER_REGISTRY-}messages.commands
+    build:
+      context: ../Source/Services/Messages/Commands
+      dockerfile: Presentation/Dockerfile
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  profile:
+    image: ${DOCKER_REGISTRY-}profile
+    build:
+      context: ../Source/Services/Profile
+      dockerfile: WebApi/Dockerfile
+    depends_on:
+      - postgres
+  
+  identity:
+    image: ${DOCKER_REGISTRY-}identity
+    build:
+      context: ../Source/Services/Identity
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:latest
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+  
+  elasticsearch:
+    image: elasticsearch:8.13.0
