@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <ItemGroup>
+        <Content Include="..\..\..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GraphQL.AspNet" />
+        <PackageReference Include="GraphQL.Server.Ui.GraphiQL" />
+        <PackageReference Include="Mapster"/>
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Business\Business.csproj" />
+      <ProjectReference Include="..\Persistence.Elastic\Persistence.Elastic.csproj" />
+      <ProjectReference Include="..\Persistence.EntityFramework\Persistence.EntityFramework.csproj" />
+      <ProjectReference Include="..\Persistence.MassTransit\Persistence.MassTransit.csproj" />
+    </ItemGroup>
+
+</Project>

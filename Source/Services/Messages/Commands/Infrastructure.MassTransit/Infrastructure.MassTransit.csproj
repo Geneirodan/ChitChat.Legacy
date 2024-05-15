@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="MassTransit"/>
+        <PackageReference Include="MassTransit.RabbitMQ"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+    </ItemGroup>
+
+</Project>
