@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <ItemGroup>
+        <Content Include="..\..\..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Infrastructure.Marten\Infrastructure.Marten.csproj" />
+        <ProjectReference Include="..\Infrastructure.MassTransit\Infrastructure.MassTransit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    </ItemGroup>
+
+</Project>
