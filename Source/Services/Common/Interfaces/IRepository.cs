@@ -9,4 +9,6 @@ public interface IRepository<TEntity, in TKey> where TEntity : class
     Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
+
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

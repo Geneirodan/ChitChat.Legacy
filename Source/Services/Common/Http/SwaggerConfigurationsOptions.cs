@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Common.Options.Configurations;
+namespace Common.Http;
 
 public sealed class SwaggerConfigurationsOptions : IConfigureOptions<SwaggerGenOptions>
 {

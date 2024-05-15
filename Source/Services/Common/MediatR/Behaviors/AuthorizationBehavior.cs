@@ -1,11 +1,11 @@
 using System.Reflection;
-using Common.Attributes;
 using Common.Interfaces;
+using Common.MediatR.Attributes;
 using FluentResults;
 using MediatR;
 using static System.Net.HttpStatusCode;
 
-namespace Common.Behaviors;
+namespace Common.MediatR.Behaviors;
 
 public sealed class AuthorizationBehavior<TRequest, TResponse>(IUser user) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

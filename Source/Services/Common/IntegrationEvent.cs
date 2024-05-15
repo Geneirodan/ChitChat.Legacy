@@ -1,3 +1,5 @@
+using MediatR;
+
 namespace Common;
 
-public abstract record IntegrationEvent(Guid Id);
+public abstract record IntegrationEvent(Guid Id): INotification;

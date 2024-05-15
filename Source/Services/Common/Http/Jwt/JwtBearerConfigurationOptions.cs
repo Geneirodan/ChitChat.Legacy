@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Common.Options.Configurations;
+namespace Common.Http.Jwt;
 
 public sealed class JwtBearerConfigurationOptions(IOptions<JwtOptions> options) : IConfigureNamedOptions<JwtBearerOptions>
 {

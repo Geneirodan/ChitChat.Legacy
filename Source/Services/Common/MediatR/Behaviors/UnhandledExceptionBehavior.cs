@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Behaviors;
+namespace Common.MediatR.Behaviors;
 
 public sealed class UnhandledExceptionBehavior<TRequest, TResponse>(ILogger<TRequest> logger) 
     : IPipelineBehavior<TRequest, TResponse>

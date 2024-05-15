@@ -9,6 +9,7 @@ internal sealed record TwoFactorRequest(
     bool ResetRecoveryCodes = false,
     bool ForgetMachine = false);
 
+// ReSharper disable once UnusedType.Global
 internal sealed class TwoFactorRequestValidator : AbstractValidator<TwoFactorRequest>
 {
     public TwoFactorRequestValidator() =>

@@ -1,12 +1,13 @@
 using System.Reflection;
+using Common.Http;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Identity.Endpoints;
 using Identity.Options;
 using Identity.Options.Configurations;
 using Identity.Persistence;
 using Identity.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SharpGrip.FluentValidation.AutoValidation.Endpoints.Extensions;
 

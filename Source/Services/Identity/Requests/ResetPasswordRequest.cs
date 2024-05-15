@@ -7,6 +7,7 @@ namespace Identity.Requests;
 
 internal sealed record ResetPasswordRequest(string Email, string ResetCode, string NewPassword);
 
+// ReSharper disable once UnusedType.Global
 internal class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
 {
     public ResetPasswordRequestValidator(IOptions<IdentityOptions> options) => 

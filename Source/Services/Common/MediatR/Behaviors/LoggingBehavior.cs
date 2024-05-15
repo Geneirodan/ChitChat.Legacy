@@ -2,7 +2,7 @@
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Behaviors;
+namespace Common.MediatR.Behaviors;
 
 public sealed class LoggingBehavior<TRequest>(ILogger<TRequest> logger, IUser user) 
     : IRequestPreProcessor<TRequest>

@@ -1,4 +1,4 @@
-namespace Common.Options;
+namespace Common.Http.Jwt;
 
 public sealed record JwtOptions
 {

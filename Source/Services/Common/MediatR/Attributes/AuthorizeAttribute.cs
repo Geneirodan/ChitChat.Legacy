@@ -1,4 +1,4 @@
-namespace Common.Attributes;
+namespace Common.MediatR.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class AuthorizeAttribute : Attribute

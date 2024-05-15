@@ -3,7 +3,7 @@ using Common.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Common.Behaviors;
+namespace Common.MediatR.Behaviors;
 
 public sealed class PerformanceBehavior<TRequest, TResponse>(ILogger<TRequest> logger, IUser user) 
     : IPipelineBehavior<TRequest, TResponse>

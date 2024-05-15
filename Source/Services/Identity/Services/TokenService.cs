@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Common.Options;
+using Common.Http.Jwt;
 using Identity.Options;
 using Identity.Persistence;
 using Microsoft.AspNetCore.Authentication.BearerToken;
