@@ -42,7 +42,7 @@ services
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
-    await scope.ServiceProvider.GetRequiredService<ApplicationContextInitializer>().SeedAsync();
+    await scope.ServiceProvider.GetRequiredService<ApplicationContextInitializer>().SeedAsync().ConfigureAwait(false);
 
 if (app.Environment.IsDevelopment())
 {

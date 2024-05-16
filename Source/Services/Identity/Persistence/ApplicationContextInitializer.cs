@@ -18,7 +18,7 @@ internal sealed class ApplicationContextInitializer(
     {
         try
         {
-            await TrySeedAsync();
+            await TrySeedAsync().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -30,10 +30,10 @@ internal sealed class ApplicationContextInitializer(
     private async Task TrySeedAsync()
     {
         foreach (var role in Roles.All)
-            if (await roleManager.FindByNameAsync(role) is null)
-                await roleManager.CreateAsync(new Role { Name = role });
+            if (await roleManager.FindByNameAsync(role).ConfigureAwait(false) is null)
+                await roleManager.CreateAsync(new Role { Name = role }).ConfigureAwait(false);
 
-        if (await userManager.FindByEmailAsync(_options.Email) is not null) return;
+        if (await userManager.FindByEmailAsync(_options.Email).ConfigureAwait(false) is not null) return;
 
         var admin = new User
         {
@@ -41,12 +41,12 @@ internal sealed class ApplicationContextInitializer(
             UserName = _options.UserName
         };
 
-        var result = await userManager.CreateAsync(admin, _options.Password);
+        var result = await userManager.CreateAsync(admin, _options.Password).ConfigureAwait(false);
 
         if (!result.Succeeded) return;
 
-        var token = await userManager.GenerateEmailConfirmationTokenAsync(admin);
-        await userManager.ConfirmEmailAsync(admin, token);
-        await userManager.AddToRoleAsync(admin, Roles.Admin);
+        var token = await userManager.GenerateEmailConfirmationTokenAsync(admin).ConfigureAwait(false);
+        await userManager.ConfirmEmailAsync(admin, token).ConfigureAwait(false);
+        await userManager.AddToRoleAsync(admin, Roles.Admin).ConfigureAwait(false);
     }
 }
