@@ -41,7 +41,7 @@
     image: ${DOCKER_REGISTRY-}profile
     build:
       context: ../Source/Services/Profile
-      dockerfile: WebApi/Dockerfile
+      dockerfile: Presentation/Dockerfile
     depends_on:
       - postgres
   

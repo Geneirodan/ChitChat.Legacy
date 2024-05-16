@@ -39,7 +39,7 @@
       - ConnectionStrings__Database=Host=postgres;Port=5432;Database=Profiles;UserName=postgres;Password=postgres
     extends:
       file: common-services.yaml
-      service: authorized
+      service: broker
     ports:
       - 23451:8080
   

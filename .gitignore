@@ -6,3 +6,4 @@ riderModule.iml
 .idea
 /Source/Services/Identity/Migrations
 /Source/Services/Messages/Commands/Presentation/Internal
+/Source/Services/Profile/Presentation/Internal/
