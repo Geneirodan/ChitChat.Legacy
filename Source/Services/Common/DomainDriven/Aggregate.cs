@@ -1,8 +1,8 @@
 namespace Common.DomainDriven;
 
-public abstract class Aggregate<TKey>
+public abstract class Aggregate
 {
-    public TKey Id { get; protected set; } = default!;
+    public Guid Id { get; protected set; }
 
     public int Version { get; protected set; }
     

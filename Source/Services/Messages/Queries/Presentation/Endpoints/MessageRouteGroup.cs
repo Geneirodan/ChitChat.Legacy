@@ -19,6 +19,6 @@ public static class MessageRouteGroup
         [FromServices] ISender mediator)
     {
         var query = request.Adapt<GetMessagesQuery>();
-        return TypedResults.Ok(await mediator.Send(query));
+        return TypedResults.Ok(await mediator.Send(query).ConfigureAwait(false));
     }
 }

@@ -1,10 +1,10 @@
 using Common.Interfaces;
 using Common.MediatR.Attributes;
+using Common.Results;
 using FluentResults;
 using MediatR;
 using Messages.Commands.Application.Interfaces;
-using Messages.Contracts.IntegrationEvents;
-using static System.Net.HttpStatusCode;
+using Messages.Contracts;
 
 namespace Messages.Commands.Application.Commands;
 
@@ -17,22 +17,22 @@ public sealed class DeleteMessageHandler(IMessageRepository repository, IUser us
 {
     public async Task<Result> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
     {
-        var message = await repository.FindAsync(request.Id, cancellationToken);
+        var message = await repository.FindAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
         if (message is null)
-            return Result.Fail(nameof(NotFound));
+            return ErrorResults.NotFound();
         
         if (message.SenderId != user.Id && message.ReceiverId != user.Id)
-            return Result.Fail(nameof(Forbidden));
+            return ErrorResults.Forbidden();
 
-        message.DeleteMessage();
+        message.Delete();
 
-        await repository.DeleteAsync(message, cancellationToken);
-        
-        var @event = new MessageDeletedEvent(message.Id, message.SenderId, message.ReceiverId);
-        await publisher.Publish(@event, cancellationToken);
+        await repository.DeleteAsync(message, cancellationToken).ConfigureAwait(false);
 
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        
+        var @event = new MessageDeletedEvent(message.Id, message.SenderId, message.ReceiverId);
+        await publisher.Publish(@event, cancellationToken).ConfigureAwait(false);
         
         return Result.Ok();
     }

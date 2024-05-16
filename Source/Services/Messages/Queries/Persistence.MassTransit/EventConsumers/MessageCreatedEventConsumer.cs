@@ -1,5 +1,5 @@
 using MassTransit;
-using Messages.Contracts.IntegrationEvents;
+using Messages.Contracts;
 using Messages.Queries.Persistence.Entities;
 using Messages.Queries.Persistence.Interfaces;
 
@@ -12,7 +12,7 @@ public class MessageCreatedEventConsumer(IMessageRepository repository) : IConsu
     {
         var (id, content, sendTime, senderId, receiverId) = context.Message;
 
-        var response = await repository.FindAsync(id);
+        var response = await repository.FindAsync(id).ConfigureAwait(false);
 
         if (response is not null) return;
 
@@ -25,7 +25,7 @@ public class MessageCreatedEventConsumer(IMessageRepository repository) : IConsu
             ReceiverId = receiverId
         };
 
-        await repository.AddAsync(message);
-        await repository.SaveChangesAsync();
+        await repository.AddAsync(message).ConfigureAwait(false);
+        await repository.SaveChangesAsync().ConfigureAwait(false);
     }
 }

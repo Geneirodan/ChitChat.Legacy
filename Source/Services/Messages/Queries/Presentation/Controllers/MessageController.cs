@@ -16,6 +16,6 @@ public class MessageController(ISender sender) : GraphController
         string search = "", int page = 1, int perPage = 10, CancellationToken cancellationToken = default)
     {
         var query = new GetMessagesQuery(page, perPage, receiverId, search);
-        return await sender.Send(query, cancellationToken);
+        return await sender.Send(query, cancellationToken).ConfigureAwait(false);
     }
 }

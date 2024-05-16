@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Common.Extensions;
 using MediatR;
 using Messages.Commands.Application.Commands;
@@ -20,41 +19,40 @@ public static class MessageRouteGroup
     }
 
     private static async Task<IResult> AddMessage(
-        ClaimsPrincipal principal,
         [FromBody] AddMessageRequest request,
         [FromServices] IMediator mediator)
     {
         var (content, dateTime, receiverId) = request;
         var command = new AddMessageCommand(content, dateTime, receiverId);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command).ConfigureAwait(false);
         return result.ResultToResponse(StatusCodes.Status201Created);
     }
 
     private static async Task<IResult> EditMessage(
-        [FromRoute] Guid id, 
-        [FromBody] EditMessageRequest request, 
+        [FromRoute] Guid id,
+        [FromBody] EditMessageRequest request,
         [FromServices] IMediator mediator)
     {
         var command = new EditMessageCommand(id, request.Content);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command).ConfigureAwait(false);
         return result.ResultToResponse(StatusCodes.Status202Accepted);
     }
 
     private static async Task<IResult> DeleteMessage(
-        [FromRoute] Guid id, 
+        [FromRoute] Guid id,
         [FromServices] IMediator mediator)
     {
         var command = new DeleteMessageCommand(id);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command).ConfigureAwait(false);
         return result.ResultToResponse(StatusCodes.Status202Accepted);
     }
 
     private static async Task<IResult> ReadMessage(
-        [FromRoute] Guid id, 
+        [FromRoute] Guid id,
         [FromServices] IMediator mediator)
     {
         var command = new ReadMessageCommand(id);
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(command).ConfigureAwait(false);
         return result.ResultToResponse(StatusCodes.Status202Accepted);
     }
 }

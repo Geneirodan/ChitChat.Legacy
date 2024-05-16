@@ -3,7 +3,7 @@ using Messages.Commands.Domain.Events.Messages;
 
 namespace Messages.Commands.Domain.Aggregates;
 
-public class Message() : Aggregate<Guid>
+public class Message() : Aggregate
 {
     public string Content { get; private set; } = null!;
 
@@ -22,16 +22,9 @@ public class Message() : Aggregate<Guid>
         Apply(@event);
     }
 
-    public void Apply(MessageCreatedEvent @event)
-    {
-        Id = @event.Id;
-        Content = @event.Content;
-        SendTime = @event.SendTime;
-        SenderId = @event.SenderId;
-        ReceiverId = @event.ReceiverId;
-    }
+    public void Apply(MessageCreatedEvent @event) => (Id, Content, SendTime, SenderId, ReceiverId) = @event;
 
-    public void EditMessage(string content)
+    public void Edit(string content)
     {
         var @event = new MessageEditedEvent(content);
         Enqueue(@event);
@@ -40,7 +33,7 @@ public class Message() : Aggregate<Guid>
 
     public void Apply(MessageEditedEvent @event) => Content = @event.Content;
 
-    public void ReadMessage()
+    public void Read()
     {
         var @event = new MessageReadEvent();
         Enqueue(@event);
@@ -49,7 +42,7 @@ public class Message() : Aggregate<Guid>
 
     public void Apply(MessageReadEvent _) => IsRead = true;
 
-    public void DeleteMessage()
+    public void Delete()
     {
         var @event = new MessageDeletedEvent();
         Enqueue(@event);

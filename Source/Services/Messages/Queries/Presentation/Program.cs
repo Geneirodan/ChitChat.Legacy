@@ -42,7 +42,7 @@ app.MapMessages("api/v1/messages");
 
 app.UseGraphQL();
 using (var scope = app.Services.CreateScope())
-    await scope.ServiceProvider.GetRequiredService<IndexInitializer>().InitializeAsync();
+    await scope.ServiceProvider.GetRequiredService<IndexInitializer>().InitializeAsync().ConfigureAwait(false);
 await app.RunAsync().ConfigureAwait(false);
 
 public partial class Program;

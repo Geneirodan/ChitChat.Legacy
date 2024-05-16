@@ -1,5 +1,5 @@
-namespace Messages.Contracts.IntegrationEvents;
+namespace Messages.Contracts;
 
-[EntityName(nameof(MessageReadEvent))]
+
 public sealed record MessageReadEvent(Guid Id, Guid SenderId, Guid ReceiverId) 
     : MessageEvent(Id, SenderId, ReceiverId);

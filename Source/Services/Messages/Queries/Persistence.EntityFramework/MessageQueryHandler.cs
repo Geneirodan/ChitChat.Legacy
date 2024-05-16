@@ -14,7 +14,7 @@ public class MessageQueryHandler(ApplicationContext context) : IMessageQueryHand
     {
         var entities = context.Messages.AsNoTracking().ApplyFilterWithoutPagination(filter);
         var paged = entities.ToPaged(filter.Page, filter.PerPage);
-        var count = await entities.CountAsync(cancellationToken);
+        var count = await entities.CountAsync(cancellationToken).ConfigureAwait(false);
         return new PaginatedList<Message>(paged, count);
     }
 }

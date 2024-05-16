@@ -8,5 +8,5 @@ public abstract class IntegrationEventHandler<TEvent>(IPublishEndpoint endpoint)
     where TEvent : INotification
 {
     public async Task Handle(TEvent request, CancellationToken cancellationToken) => 
-        await endpoint.Publish(request, cancellationToken);
+        await endpoint.Publish(request, cancellationToken).ConfigureAwait(false);
 }

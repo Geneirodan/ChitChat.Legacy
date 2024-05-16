@@ -4,7 +4,7 @@ using Common.Interfaces;
 namespace Messages.Commands.Infrastructure.Marten.Repositories;
 
 public class Repository<TEntity>(IDocumentSession documentSession) : IRepository<TEntity, Guid>
-    where TEntity : Aggregate<Guid>
+    where TEntity : Aggregate
 {
     public virtual Task<TEntity?> FindAsync(Guid id, CancellationToken cancellationToken = default) => 
         documentSession.Events.AggregateStreamAsync<TEntity>(id, token: cancellationToken);

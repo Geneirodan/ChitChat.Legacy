@@ -1,5 +1,5 @@
 using MassTransit;
-using Messages.Contracts.IntegrationEvents;
+using Messages.Contracts;
 
 namespace Messages.Commands.Infrastructure.MassTransit.EventHandlers;
 

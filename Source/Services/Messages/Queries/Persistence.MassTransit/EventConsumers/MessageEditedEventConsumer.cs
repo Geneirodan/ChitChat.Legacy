@@ -1,5 +1,5 @@
 using MassTransit;
-using Messages.Contracts.IntegrationEvents;
+using Messages.Contracts;
 using Messages.Queries.Persistence.Interfaces;
 
 namespace Messages.Queries.Persistence.MassTransit.EventConsumers;
@@ -12,13 +12,13 @@ public class MessageEditedEventConsumer(IMessageRepository repository) : IConsum
     {
         var (id, content, _, _) = context.Message;
         
-        var message = await repository.FindAsync(id);
+        var message = await repository.FindAsync(id).ConfigureAwait(false);
 
         if (message is null) return;
 
         message.Content = content;
         
-        await repository.UpdateAsync(message);
-        await repository.SaveChangesAsync();
+        await repository.UpdateAsync(message).ConfigureAwait(false);
+        await repository.SaveChangesAsync().ConfigureAwait(false);
     }
 }

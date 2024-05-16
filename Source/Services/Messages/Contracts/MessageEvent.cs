@@ -1,6 +1,5 @@
 using Common;
 
-namespace Messages.Contracts.IntegrationEvents;
+namespace Messages.Contracts;
 
-[ExcludeFromTopology]
 public record MessageEvent(Guid Id, Guid SenderId, Guid ReceiverId) : IntegrationEvent(Id);
