@@ -24,10 +24,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Common\Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj" />
+      <ProjectReference Include="..\Common\Http\Http.csproj" />
+      <ProjectReference Include="..\Common\Other\Other.csproj" />
     </ItemGroup>
 
 </Project>

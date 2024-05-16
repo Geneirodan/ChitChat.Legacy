@@ -1,4 +1,4 @@
-using Common;
+using Common.Other;
 using GraphQL.AspNet.Attributes;
 using GraphQL.AspNet.Controllers;
 using MediatR;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Messages.Queries.Presentation.Controllers;
 
-public class MessageController(ISender sender) : GraphController
+public sealed class MessageController(ISender sender) : GraphController
 {
     [Authorize]
     [QueryRoot("messages")]

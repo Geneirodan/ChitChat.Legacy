@@ -1,4 +1,4 @@
-using Common;
+using Common.Other;
 
 namespace Messages.Contracts;
 

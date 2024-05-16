@@ -1,13 +1,13 @@
-using Common.Extensions;
+using Common.Http.Extensions;
 using MediatR;
 using Messages.Commands.Application.Commands;
-using Messages.Commands.Domain.Aggregates;
+using Messages.Commands.Domain;
 using Messages.Commands.Presentation.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Messages.Commands.Presentation.Endpoints;
 
-public static class MessageRouteGroup
+internal static class MessageRouteGroup
 {
     public static void MapMessages(this IEndpointRouteBuilder app, string prefix)
     {

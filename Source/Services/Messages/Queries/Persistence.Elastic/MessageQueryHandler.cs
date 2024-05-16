@@ -1,4 +1,4 @@
-using Common;
+using Common.Other;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.Core.Search;
 using Messages.Queries.Persistence.Entities;
@@ -7,7 +7,7 @@ using Messages.Queries.Persistence.Interfaces;
 
 namespace Messages.Queries.Persistence.Elastic;
 
-public class MessageQueryHandler(ElasticsearchClient client) : IMessageQueryHandler
+public sealed record MessageQueryHandler(ElasticsearchClient client) : IMessageQueryHandler
 {
     private static readonly string[] Fields = [nameof(Message.Content)];
 

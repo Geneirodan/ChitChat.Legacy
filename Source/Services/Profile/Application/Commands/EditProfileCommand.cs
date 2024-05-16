@@ -1,6 +1,6 @@
 using Application.Interfaces;
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using FluentValidation;
@@ -10,9 +10,9 @@ using MediatR;
 namespace Application.Commands;
 
 [Authorize]
-public record EditProfileCommand(string FirstName, string LastName, string Bio) : IRequest<Result>;
+public sealed record EditProfileCommand(string FirstName, string LastName, string Bio) : IRequest<Result>;
 
-public class EditProfileCommandHandler(IUser user, IProfileRepository repository, IPublisher publisher) 
+public sealed class EditProfileCommandHandler(IUser user, IProfileRepository repository, IPublisher publisher) 
     : IRequestHandler<EditProfileCommand, Result>
 {
     public async Task<Result> Handle(EditProfileCommand request, CancellationToken cancellationToken)

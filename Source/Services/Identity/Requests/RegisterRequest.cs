@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace Identity.Requests;
 
+
 internal sealed record RegisterRequest(string Username, string Email, string Password, string ConfirmUrl);
 
-// ReSharper disable once UnusedType.Global
 internal class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterRequestValidator(IOptions<IdentityOptions> options)

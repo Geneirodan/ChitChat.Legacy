@@ -1,5 +1,5 @@
-using Common.Interfaces;
-using Messages.Commands.Domain.Aggregates;
+using Common.Abstractions;
+using Messages.Commands.Domain;
 
 namespace Messages.Commands.Application.Interfaces;
 

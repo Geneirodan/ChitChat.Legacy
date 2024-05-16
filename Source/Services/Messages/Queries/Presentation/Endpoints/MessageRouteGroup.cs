@@ -1,4 +1,4 @@
-using Common;
+using Common.Other;
 using Mapster;
 using MediatR;
 using Messages.Queries.Business.Queries;

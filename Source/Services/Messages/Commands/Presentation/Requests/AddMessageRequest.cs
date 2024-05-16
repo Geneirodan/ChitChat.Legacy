@@ -1,3 +1,3 @@
 namespace Messages.Commands.Presentation.Requests;
 
-public record AddMessageRequest(string Content, DateTime Timestamp, Guid ReceiverId);
+internal sealed record AddMessageRequest(string Content, DateTime Timestamp, Guid ReceiverId);

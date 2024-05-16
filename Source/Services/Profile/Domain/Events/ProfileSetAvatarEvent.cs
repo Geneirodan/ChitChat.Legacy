@@ -1,5 +1,5 @@
-using Common.DomainDriven;
+using Common.DDD;
 
 namespace Domain.Events;
 
-public record ProfileSetAvatarEvent(Guid Id, string? AvatarUrl) : DomainEvent(Id);
+public sealed record ProfileSetAvatarEvent(Guid Id, string? AvatarUrl) : DomainEvent(Id);

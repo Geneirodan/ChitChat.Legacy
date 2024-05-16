@@ -1,8 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Identity.Extensions;
 
 internal static class RuleBuilderOptionsExtensions
@@ -43,7 +41,7 @@ internal static class RuleBuilderOptionsExtensions
     }
 }
 
-internal static class PasswordValidationErrors
+public static class PasswordValidationErrors
 {
     public static string RequireDigit => "Password must contain a digit";
     public static string RequireLowercase => "Password must contain a lower case character";

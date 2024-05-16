@@ -1,5 +1,5 @@
-using Common.DomainDriven;
+using Common.DDD;
 
 namespace Domain.Events;
 
-public record ProfileCreatedEvent(Guid Id, string FirstName, string LastName) : DomainEvent(Id);
+public sealed record ProfileCreatedEvent(Guid Id, string FirstName, string LastName) : DomainEvent(Id);

@@ -1,9 +1,9 @@
 using Messages.Commands.Application.Interfaces;
 using Messages.Commands.Infrastructure.Marten.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Weasel.Core;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Messages.Commands.Infrastructure.Marten;
 
 public static class DependencyInjection
 {
@@ -13,12 +13,7 @@ public static class DependencyInjection
             .AddMarten(options =>
             {
                 options.Connection(connectionString);
-                options.UseSystemTextJsonForSerialization(
-                    enumStorage: EnumStorage.AsString,
-                    casing: Casing.CamelCase
-                );
-
-                //options.Projections.Add<MessageProjection>(ProjectionLifecycle.Inline);
+                options.UseSystemTextJsonForSerialization(EnumStorage.AsString, Casing.CamelCase);
             })
             .UseLightweightSessions()
             .OptimizeArtifactWorkflow();

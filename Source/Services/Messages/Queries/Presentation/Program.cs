@@ -1,7 +1,10 @@
 using Common.Http;
 using GraphQL.AspNet.Configuration;
+using MassTransit;
+using Messages.Queries.Business;
 using Messages.Queries.Persistence.Elastic;
 using Messages.Queries.Persistence.EntityFramework;
+using Messages.Queries.Persistence.MassTransit;
 using Messages.Queries.Presentation.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +20,7 @@ else
     builder.Services.AddElastic(configuration.GetConnectionString("Elastic")!);
 
 builder.Services
+    .Configure<RabbitMqTransportOptions>(configuration)
     .AddMassTransit(rabbitMqSection)
     .AddApplicationServices()
     .AddHttpUser()

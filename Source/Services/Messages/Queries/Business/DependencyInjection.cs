@@ -1,8 +1,8 @@
 using System.Reflection;
-using Common.MediatR;
+using Common.Mediator;
+using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Messages.Queries.Business;
 
 public static class DependencyInjection
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messages.Queries.Persistence.EntityFramework;
 
-public class MessageRepository(ApplicationContext context) : IMessageRepository
+public sealed record MessageRepository(ApplicationContext context) : IMessageRepository
 {
     private readonly DbSet<Message> _messages = context.Messages;
 

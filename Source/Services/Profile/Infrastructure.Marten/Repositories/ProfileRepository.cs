@@ -1,5 +1,5 @@
+using Application;
 using Application.Interfaces;
-using Application.Queries;
 using Infrastructure.Marten.Aggregates;
 
 namespace Infrastructure.Marten.Repositories;

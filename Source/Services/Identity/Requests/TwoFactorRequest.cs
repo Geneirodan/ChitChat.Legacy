@@ -2,6 +2,7 @@ using FluentValidation;
 
 namespace Identity.Requests;
 
+
 internal sealed record TwoFactorRequest(
     bool? Enable,
     string? TwoFactorCode,
@@ -9,7 +10,6 @@ internal sealed record TwoFactorRequest(
     bool ResetRecoveryCodes = false,
     bool ForgetMachine = false);
 
-// ReSharper disable once UnusedType.Global
 internal sealed class TwoFactorRequestValidator : AbstractValidator<TwoFactorRequest>
 {
     public TwoFactorRequestValidator() =>

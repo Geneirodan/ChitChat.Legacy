@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\Common\Common.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoFilterer" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Abstractions\Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Common\Other\Other.csproj" />
+  </ItemGroup>
 </Project>

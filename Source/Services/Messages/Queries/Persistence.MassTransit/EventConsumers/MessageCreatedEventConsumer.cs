@@ -5,8 +5,7 @@ using Messages.Queries.Persistence.Interfaces;
 
 namespace Messages.Queries.Persistence.MassTransit.EventConsumers;
 
-// ReSharper disable once UnusedType.Global
-public class MessageCreatedEventConsumer(IMessageRepository repository) : IConsumer<MessageCreatedEvent>
+public sealed record MessageCreatedEventConsumer(IMessageRepository repository) : IConsumer<MessageCreatedEvent>
 {
     public async Task Consume(ConsumeContext<MessageCreatedEvent> context)
     {

@@ -1,5 +1,5 @@
-using Common.DomainDriven;
+using Common.DDD;
 
 namespace Domain.Events;
 
-public record ProfileDeletedEvent(Guid Id) : DomainEvent(Id);
+public sealed record ProfileDeletedEvent(Guid Id) : DomainEvent(Id);

@@ -2,10 +2,10 @@ using Application.Interfaces;
 using Infrastructure.Marten.Projections;
 using Infrastructure.Marten.Repositories;
 using Marten.Events.Projections;
+using Microsoft.Extensions.DependencyInjection;
 using Weasel.Core;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Infrastructure.Marten;
 
 public static class DependencyInjection
 {

@@ -1,5 +1,5 @@
 using AutoFilterer.Extensions;
-using Common;
+using Common.Other;
 using Messages.Queries.Persistence.Entities;
 using Messages.Queries.Persistence.Filters;
 using Messages.Queries.Persistence.Interfaces;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messages.Queries.Persistence.EntityFramework;
 
-public class MessageQueryHandler(ApplicationContext context) : IMessageQueryHandler
+public sealed record MessageQueryHandler(ApplicationContext context) : IMessageQueryHandler
 {
     public async Task<PaginatedList<Message>> QueryAsync(MessagesFilter filter,
         CancellationToken cancellationToken = default)

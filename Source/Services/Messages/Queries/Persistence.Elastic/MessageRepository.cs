@@ -4,7 +4,7 @@ using Messages.Queries.Persistence.Interfaces;
 
 namespace Messages.Queries.Persistence.Elastic;
 
-public class MessageRepository(ElasticsearchClient client) : IMessageRepository
+public sealed record MessageRepository(ElasticsearchClient client) : IMessageRepository
 {
     private static readonly IndexName IndexName = Indices.Messages;
 

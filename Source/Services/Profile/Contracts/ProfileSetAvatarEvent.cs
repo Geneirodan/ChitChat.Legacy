@@ -1,5 +1,6 @@
-﻿using Common;
+﻿using Common.Other;
 
 namespace Contracts;
 
-public record ProfileSetAvatarEvent(Guid Id, string? AvatarUrl) : IntegrationEvent(Id);
+
+public sealed record ProfileSetAvatarEvent(Guid Id, string? AvatarUrl) : IntegrationEvent(Id);

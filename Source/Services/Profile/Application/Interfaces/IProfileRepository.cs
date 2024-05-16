@@ -1,5 +1,4 @@
-using Application.Queries;
-using Common.Interfaces;
+using Common.Abstractions;
 using Domain;
 
 namespace Application.Interfaces;

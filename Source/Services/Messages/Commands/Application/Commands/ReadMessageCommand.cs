@@ -1,5 +1,5 @@
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using MediatR;
@@ -11,8 +11,7 @@ namespace Messages.Commands.Application.Commands;
 [Authorize]
 public sealed record ReadMessageCommand(Guid Id) : IRequest<Result>;
 
-// ReSharper disable once UnusedType.Global
-public sealed class ReadMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
+internal sealed class ReadMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
     : IRequestHandler<ReadMessageCommand, Result>
 {
     public async Task<Result> Handle(ReadMessageCommand request, CancellationToken cancellationToken)
@@ -25,13 +24,12 @@ public sealed class ReadMessageHandler(IMessageRepository repository, IUser user
         if (message.ReceiverId != user.Id)
             return ErrorResults.Forbidden();
 
-        message.Read();
+        var @event = message.Read();
 
         await repository.UpdateAsync(message, cancellationToken).ConfigureAwait(false);
 
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        var @event = new MessageReadEvent(message.Id, message.SenderId, message.ReceiverId);
         await publisher.Publish(@event, cancellationToken).ConfigureAwait(false);
 
         return Result.Ok();

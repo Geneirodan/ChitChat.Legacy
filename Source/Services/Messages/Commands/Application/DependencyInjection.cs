@@ -1,9 +1,9 @@
-using FluentValidation;
 using System.Reflection;
-using Common.MediatR;
+using Common.Mediator;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Messages.Commands.Application;
 
 public static class DependencyInjection
 {

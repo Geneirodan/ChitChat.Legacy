@@ -1,13 +1,12 @@
 using System.Reflection;
 using MassTransit;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Messages.Commands.Infrastructure.MassTransit;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddMassTransit(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddMassTransit(this IServiceCollection services)
     {
         services.AddMassTransit(configurator =>
         {
@@ -19,7 +18,6 @@ public static class DependencyInjection
                 cfg.ConfigureEndpoints(context);
             });
         });
-        services.Configure<RabbitMqTransportOptions>(configuration);
         return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
     }
 }

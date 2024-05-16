@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-      <ProjectReference Include="..\..\Common\Common.csproj" />
+      <PackageReference Include="MassTransit.Abstractions" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="MassTransit.Abstractions" />
+      <ProjectReference Include="..\..\Common\Other\Other.csproj" />
     </ItemGroup>
 </Project>

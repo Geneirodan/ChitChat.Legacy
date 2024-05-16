@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Http\Http.csproj" />
       <ProjectReference Include="..\Business\Business.csproj" />
       <ProjectReference Include="..\Persistence.Elastic\Persistence.Elastic.csproj" />
       <ProjectReference Include="..\Persistence.EntityFramework\Persistence.EntityFramework.csproj" />

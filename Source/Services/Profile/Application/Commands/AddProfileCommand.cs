@@ -1,6 +1,6 @@
 using Application.Interfaces;
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using Domain;
 using FluentResults;
 using FluentValidation;

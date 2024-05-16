@@ -1,11 +1,11 @@
-﻿using Common.Http.Jwt;
-using Common.Interfaces;
+﻿using Common.Abstractions;
+using Common.Http.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using static Common.Roles;
+using static Common.Other.Roles;
 
 namespace Common.Http;
 

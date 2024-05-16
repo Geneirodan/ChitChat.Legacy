@@ -1,5 +1,6 @@
-using Common;
+using Common.Other;
 
 namespace Contracts;
 
-public record ProfileEditedEvent(Guid Id, string FirstName, string LastName, string Bio) : IntegrationEvent(Id);
+
+public sealed record ProfileEditedEvent(Guid Id, string FirstName, string LastName, string Bio) : IntegrationEvent(Id);

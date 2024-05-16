@@ -1,10 +1,10 @@
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using FluentResults;
 using FluentValidation;
 using MediatR;
 using Messages.Commands.Application.Interfaces;
-using Messages.Commands.Domain.Aggregates;
+using Messages.Commands.Domain;
 using Messages.Contracts;
 
 namespace Messages.Commands.Application.Commands;
@@ -13,10 +13,7 @@ namespace Messages.Commands.Application.Commands;
 public sealed record AddMessageCommand(string Content, DateTime Timestamp, Guid ReceiverId)
     : IRequest<Result<MessageResponse>>;
 
-public sealed record MessageResponse(string Content, bool IsRead, DateTime SendTime);
-
-// ReSharper disable once UnusedType.Global
-public sealed class AddMessageCommandHandler(IMessageRepository repository, IUser user, IPublisher publisher)
+internal sealed class AddMessageCommandHandler(IMessageRepository repository, IUser user, IPublisher publisher)
     : IRequestHandler<AddMessageCommand, Result<MessageResponse>>
 {
     public async Task<Result<MessageResponse>> Handle(AddMessageCommand request, CancellationToken cancellationToken)
@@ -26,13 +23,12 @@ public sealed class AddMessageCommandHandler(IMessageRepository repository, IUse
         var (content, dateTime, receiverId) = request;
 
         var senderId = user.Id!.Value;
-        var message = new Message(id, content, dateTime, senderId, receiverId);
+        var (message, @event) = Message.CreateInstance(id, content, dateTime, senderId, receiverId);
 
         await repository.AddAsync(message, cancellationToken).ConfigureAwait(false);
 
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        var @event = new MessageCreatedEvent(id, content, dateTime, senderId, receiverId);
         await publisher.Publish(@event, cancellationToken).ConfigureAwait(false);
 
         var created = await repository.FindAsync(id, cancellationToken).ConfigureAwait(false);
@@ -48,8 +44,7 @@ public sealed class AddMessageCommandHandler(IMessageRepository repository, IUse
     }
 }
 
-// ReSharper disable once UnusedType.Global
-public class MessageAddValidator : AbstractValidator<AddMessageCommand>
+internal sealed class MessageAddValidator : AbstractValidator<AddMessageCommand>
 {
     public MessageAddValidator()
     {

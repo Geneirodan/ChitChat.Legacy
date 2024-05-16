@@ -3,7 +3,7 @@ using Messages.Queries.Persistence.Entities;
 
 namespace Messages.Queries.Persistence.Elastic;
 
-public class IndexInitializer(ElasticsearchClient client)
+public sealed record IndexInitializer(ElasticsearchClient client)
 {
     public async Task InitializeAsync()
     {

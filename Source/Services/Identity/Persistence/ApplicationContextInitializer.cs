@@ -1,4 +1,4 @@
-using Common;
+using Common.Other;
 using Identity.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

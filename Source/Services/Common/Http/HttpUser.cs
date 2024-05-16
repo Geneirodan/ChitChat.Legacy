@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
-using Common.Interfaces;
+using Common.Abstractions;
 using Microsoft.AspNetCore.Http;
 
 namespace Common.Http;
 
-public class HttpUser(IHttpContextAccessor httpContextAccessor) : IUser
+public  sealed class HttpUser(IHttpContextAccessor httpContextAccessor) : IUser
 {
     public bool IsInRole(string role) => httpContextAccessor.HttpContext?.User.IsInRole(role) ?? false;
 

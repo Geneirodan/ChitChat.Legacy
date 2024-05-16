@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Messages.Commands.Infrastructure.MassTransit.EventHandlers;
 
-public abstract class IntegrationEventHandler<TEvent>(IPublishEndpoint endpoint)
+internal abstract class IntegrationEventHandler<TEvent>(IPublishEndpoint endpoint)
     : INotificationHandler<TEvent>
     where TEvent : INotification
 {

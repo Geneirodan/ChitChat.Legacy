@@ -1,5 +1,5 @@
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using FluentValidation;
@@ -12,8 +12,7 @@ namespace Messages.Commands.Application.Commands;
 [Authorize]
 public sealed record EditMessageCommand(Guid Id, string Content) : IRequest<Result>;
 
-// ReSharper disable once UnusedType.Global
-public sealed class EditMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
+internal sealed class EditMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
     : IRequestHandler<EditMessageCommand, Result>
 {
     public async Task<Result> Handle(EditMessageCommand request, CancellationToken cancellationToken)
@@ -27,21 +26,19 @@ public sealed class EditMessageHandler(IMessageRepository repository, IUser user
         if (message.SenderId != user.Id)
             return ErrorResults.Forbidden();
 
-        message.Edit(content);
+        var @event = message.Edit(content);
 
         await repository.UpdateAsync(message, cancellationToken).ConfigureAwait(false);
 
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        var @event = new MessageEditedEvent(message.Id, message.Content, message.SenderId, message.ReceiverId);
         await publisher.Publish(@event, cancellationToken).ConfigureAwait(false);
 
         return Result.Ok();
     }
 }
 
-// ReSharper disable once UnusedType.Global
-public class MessageEditValidator : AbstractValidator<EditMessageCommand>
+internal sealed class MessageEditValidator : AbstractValidator<EditMessageCommand>
 {
     public MessageEditValidator()
     {

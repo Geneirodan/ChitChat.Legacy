@@ -1,6 +1,6 @@
 using Application.Commands;
 using Application.Queries;
-using Common.Extensions;
+using Common.Http.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Requests;

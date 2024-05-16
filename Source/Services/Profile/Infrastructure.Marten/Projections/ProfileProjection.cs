@@ -1,10 +1,10 @@
-using Application.Queries;
+using Application;
 using Domain.Events;
 using Marten.Events.Aggregation;
 
 namespace Infrastructure.Marten.Projections;
 
-public class ProfileProjection : SingleStreamProjection<ProfileViewModel>
+public sealed class ProfileProjection : SingleStreamProjection<ProfileViewModel>
 {
     public ProfileProjection()
     {

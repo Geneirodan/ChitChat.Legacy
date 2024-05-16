@@ -1,13 +1,10 @@
 using Application.Interfaces;
-using Common.Interfaces;
+using Common.Abstractions;
 using MediatR;
 
 namespace Application.Queries;
 
 public sealed record GetProfileQuery : IRequest<ProfileViewModel?>;
-
-
-public sealed record ProfileViewModel(Guid Id, string FirstName, string LastName, string Bio);
 
 public sealed class GetProfileQueryHandler(IProfileRepository repository, IUser user)
     : IRequestHandler<GetProfileQuery, ProfileViewModel?>

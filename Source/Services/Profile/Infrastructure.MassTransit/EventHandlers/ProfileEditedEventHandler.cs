@@ -1,5 +1,4 @@
 namespace Infrastructure.MassTransit.EventHandlers;
 
-// ReSharper disable once UnusedType.Global
-public class ProfileEditedEventHandler(IPublishEndpoint endpoint)
+public sealed class ProfileEditedEventHandler(IPublishEndpoint endpoint)
     : IntegrationEventHandler<Domain.Events.ProfileEditedEvent, Contracts.ProfileEditedEvent>(endpoint);

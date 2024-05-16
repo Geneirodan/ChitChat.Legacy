@@ -1,4 +1,8 @@
 using Common.Http;
+using MassTransit;
+using Messages.Commands.Application;
+using Messages.Commands.Infrastructure.Marten;
+using Messages.Commands.Infrastructure.MassTransit;
 using Messages.Commands.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +15,8 @@ services.AddHealthChecks();
 services
     .AddHttpUser()
     .AddApplicationServices()
-    .AddMassTransit(configuration.GetSection("RabbitMQ"))
+    .Configure<RabbitMqTransportOptions>(configuration.GetSection("RabbitMQ"))
+    .AddMassTransit()
     .AddInfrastructure(connectionString!)
     .AddProblemDetails()
     .AddSwagger()

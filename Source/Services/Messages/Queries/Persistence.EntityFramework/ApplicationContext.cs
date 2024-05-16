@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messages.Queries.Persistence.EntityFramework;
 
-public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
+public sealed class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
 {
     public DbSet<Message> Messages { get; init; } = null!;
     

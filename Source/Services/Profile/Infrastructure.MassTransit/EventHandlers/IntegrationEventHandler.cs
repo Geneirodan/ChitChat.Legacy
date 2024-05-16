@@ -1,5 +1,5 @@
-using Common;
-using Common.DomainDriven;
+using Common.DDD;
+using Common.Other;
 using Mapster;
 using MediatR;
 

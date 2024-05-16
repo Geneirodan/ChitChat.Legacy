@@ -1,5 +1,5 @@
-using Common.Interfaces;
-using Common.MediatR.Attributes;
+using Common.Abstractions;
+using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using MediatR;
@@ -11,8 +11,7 @@ namespace Messages.Commands.Application.Commands;
 [Authorize]
 public sealed record DeleteMessageCommand(Guid Id) : IRequest<Result>;
 
-// ReSharper disable once UnusedType.Global
-public sealed class DeleteMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
+internal sealed class DeleteMessageHandler(IMessageRepository repository, IUser user, IPublisher publisher)
     : IRequestHandler<DeleteMessageCommand, Result>
 {
     public async Task<Result> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
@@ -25,13 +24,12 @@ public sealed class DeleteMessageHandler(IMessageRepository repository, IUser us
         if (message.SenderId != user.Id && message.ReceiverId != user.Id)
             return ErrorResults.Forbidden();
 
-        message.Delete();
+        var @event = message.Delete();
 
         await repository.DeleteAsync(message, cancellationToken).ConfigureAwait(false);
 
         await repository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         
-        var @event = new MessageDeletedEvent(message.Id, message.SenderId, message.ReceiverId);
         await publisher.Publish(@event, cancellationToken).ConfigureAwait(false);
         
         return Result.Ok();

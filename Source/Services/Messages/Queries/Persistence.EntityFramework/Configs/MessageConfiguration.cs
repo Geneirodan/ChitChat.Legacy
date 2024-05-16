@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Messages.Queries.Persistence.EntityFramework.Configs;
 
-public class MessageConfiguration : IEntityTypeConfiguration<Message>
+public sealed record MessageConfiguration : IEntityTypeConfiguration<Message>
 {
     public void Configure(EntityTypeBuilder<Message> builder) => 
         builder.Property(x => x.Id).ValueGeneratedNever();
