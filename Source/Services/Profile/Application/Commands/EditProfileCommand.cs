@@ -1,13 +1,12 @@
-using Application.Interfaces;
 using Common.Abstractions;
 using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using FluentValidation;
 using MediatR;
+using Profile.Application.Interfaces;
 
-
-namespace Application.Commands;
+namespace Profile.Application.Commands;
 
 [Authorize]
 public sealed record EditProfileCommand(string FirstName, string LastName, string Bio) : IRequest<Result>;

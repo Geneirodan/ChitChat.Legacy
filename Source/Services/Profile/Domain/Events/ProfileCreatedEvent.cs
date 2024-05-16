@@ -1,5 +1,5 @@
 using Common.DDD;
 
-namespace Domain.Events;
+namespace Profile.Domain.Events;
 
 public sealed record ProfileCreatedEvent(Guid Id, string FirstName, string LastName) : DomainEvent(Id);

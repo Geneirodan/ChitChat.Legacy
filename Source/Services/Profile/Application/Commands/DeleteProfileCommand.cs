@@ -1,12 +1,11 @@
-using Application.Interfaces;
 using Common.Abstractions;
 using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using MediatR;
+using Profile.Application.Interfaces;
 
-
-namespace Application.Commands;
+namespace Profile.Application.Commands;
 
 [Authorize]
 public sealed record DeleteProfileCommand : IRequest<Result>;

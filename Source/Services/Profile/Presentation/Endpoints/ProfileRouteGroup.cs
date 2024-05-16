@@ -1,11 +1,11 @@
-using Application.Commands;
-using Application.Queries;
 using Common.Http.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Requests;
+using Profile.Application.Commands;
+using Profile.Application.Queries;
+using Profile.Presentation.Requests;
 
-namespace Presentation.Endpoints;
+namespace Profile.Presentation.Endpoints;
 
 public static class ProfileRouteGroup
 {

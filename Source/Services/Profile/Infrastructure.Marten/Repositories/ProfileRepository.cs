@@ -1,8 +1,7 @@
-using Application;
-using Application.Interfaces;
-using Infrastructure.Marten.Aggregates;
+using Profile.Application;
+using Profile.Application.Interfaces;
 
-namespace Infrastructure.Marten.Repositories;
+namespace Profile.Infrastructure.Marten.Repositories;
 
 public sealed class ProfileRepository(IDocumentSession documentSession) : IProfileRepository
 {
@@ -10,12 +9,12 @@ public sealed class ProfileRepository(IDocumentSession documentSession) : IProfi
         await documentSession.Query<ProfileViewModel>().FirstOrDefaultAsync(x=>x.Id == id, cancellationToken);
     
     public async Task<Domain.Profile?> FindAsync(Guid id, CancellationToken cancellationToken = default)=>
-        await documentSession.Events.AggregateStreamAsync<Profile>(id, token: cancellationToken).ConfigureAwait(false);
+        await documentSession.Events.AggregateStreamAsync<Aggregates.Profile>(id, token: cancellationToken).ConfigureAwait(false);
 
     public Task AddAsync(Domain.Profile aggregate, CancellationToken cancellationToken = default)
     {
         var events = aggregate.DequeueUncommittedEvents();
-        documentSession.Events.StartStream<Profile>(aggregate.Id, events);
+        documentSession.Events.StartStream<Aggregates.Profile>(aggregate.Id, events);
         return Task.CompletedTask;
     }
 

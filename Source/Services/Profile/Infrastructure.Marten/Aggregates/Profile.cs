@@ -1,6 +1,6 @@
-using Domain.Events;
+using Profile.Domain.Events;
 
-namespace Infrastructure.Marten.Aggregates;
+namespace Profile.Infrastructure.Marten.Aggregates;
 
 
 public sealed class Profile : Domain.Profile

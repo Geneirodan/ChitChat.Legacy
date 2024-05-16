@@ -1,8 +1,8 @@
-using Application.Interfaces;
 using Common.Abstractions;
 using MediatR;
+using Profile.Application.Interfaces;
 
-namespace Application.Queries;
+namespace Profile.Application.Queries;
 
 public sealed record GetProfileQuery : IRequest<ProfileViewModel?>;
 

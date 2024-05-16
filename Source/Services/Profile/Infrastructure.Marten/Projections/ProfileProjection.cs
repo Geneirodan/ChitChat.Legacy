@@ -1,8 +1,8 @@
-using Application;
-using Domain.Events;
 using Marten.Events.Aggregation;
+using Profile.Application;
+using Profile.Domain.Events;
 
-namespace Infrastructure.Marten.Projections;
+namespace Profile.Infrastructure.Marten.Projections;
 
 public sealed class ProfileProjection : SingleStreamProjection<ProfileViewModel>
 {

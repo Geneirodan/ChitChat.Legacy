@@ -3,7 +3,7 @@ using Common.Mediator;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application;
+namespace Profile.Application;
 
 public static class DependencyInjection
 {

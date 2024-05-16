@@ -1,9 +1,9 @@
-using Application;
 using Common.Http;
-using Infrastructure.Marten;
-using Infrastructure.MassTransit;
 using MassTransit;
-using Presentation.Endpoints;
+using Profile.Application;
+using Profile.Infrastructure.Marten;
+using Profile.Infrastructure.MassTransit;
+using Profile.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

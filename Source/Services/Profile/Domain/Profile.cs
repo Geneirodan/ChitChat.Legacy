@@ -1,7 +1,7 @@
 ﻿using Common.DDD;
-using Domain.Events;
+using Profile.Domain.Events;
 
-namespace Domain;
+namespace Profile.Domain;
 
 public class Profile : Aggregate
 {

@@ -37,6 +37,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Source\Services\Identity\Identity.csproj", "{8F5CC83C-52E2-4AB6-B8AD-A66A6D2ECEFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{2580E927-A4F5-48CD-A3D7-950658466DCB}"
+	ProjectSection(SolutionItems) = preProject
+		Source\Services\Profile\Directory.Build.props = Source\Services\Profile\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRNotifier", "Source\Services\Messages\SignalRNotifier\SignalRNotifier.csproj", "{B5BC22AD-03AD-43B8-913E-884B3424C961}"
 EndProject

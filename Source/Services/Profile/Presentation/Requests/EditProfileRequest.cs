@@ -1,4 +1,4 @@
-namespace Presentation.Requests;
+namespace Profile.Presentation.Requests;
 
 
 public sealed record EditProfileRequest(string FirstName, string LastName, string Bio);

@@ -1,11 +1,11 @@
-using Application.Interfaces;
-using Infrastructure.Marten.Projections;
-using Infrastructure.Marten.Repositories;
 using Marten.Events.Projections;
 using Microsoft.Extensions.DependencyInjection;
+using Profile.Application.Interfaces;
+using Profile.Infrastructure.Marten.Projections;
+using Profile.Infrastructure.Marten.Repositories;
 using Weasel.Core;
 
-namespace Infrastructure.Marten;
+namespace Profile.Infrastructure.Marten;
 
 public static class DependencyInjection
 {

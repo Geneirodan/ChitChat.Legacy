@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.MassTransit;
+namespace Profile.Infrastructure.MassTransit;
 
 public static class DependencyInjection
 {
