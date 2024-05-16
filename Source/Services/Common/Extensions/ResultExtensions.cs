@@ -1,6 +1,7 @@
+using Common.Results;
 using FluentResults;
 using Microsoft.AspNetCore.Http;
-using static System.Net.HttpStatusCode;
+using static Microsoft.AspNetCore.Http.Results;
 
 namespace Common.Extensions;
 
@@ -11,14 +12,14 @@ public static class ResultExtensions
     
     private static IResult ResultToError(this ResultBase result)
     {
-        if (result.HasError(x => x.Message == nameof(NotFound)))
-            return Results.NotFound();
+        if (result.IsNotFound())
+            return NotFound();
 
-        if (result.HasError(x => x.Message == nameof(Forbidden)))
-            return Results.Forbid();
+        if (result.IsForbidden())
+            return Forbid();
 
-        if (result.HasError(x => x.Message == nameof(Unauthorized)))
-            return Results.Unauthorized();
+        if (result.IsUnauthorized())
+            return Unauthorized();
 
         Dictionary<string, List<string>> errors = [];
         
@@ -34,12 +35,12 @@ public static class ResultExtensions
                 errors[string.Empty].Add(error.Message);
             }
 
-        return Results.ValidationProblem(errors.ToDictionary(x => x.Key, x => x.Value.ToArray()));
+        return ValidationProblem(errors.ToDictionary(x => x.Key, x => x.Value.ToArray()));
     }
 
-    public static IResult ResultToResponse(this Result result, int statusCode = StatusCodes.Status200OK) =>
-        result.IsFailed ? result.ResultToError() : Results.StatusCode(statusCode);
+    public static IResult ResultToResponse(this Result result, int statusCode = StatusCodes.Status200OK) => 
+        result.IsFailed ? result.ResultToError() : StatusCode(statusCode);
 
     public static IResult ResultToResponse<T>(this Result<T> result, int statusCode = StatusCodes.Status200OK) =>
-        result.IsFailed ? result.ResultToError() : Results.Json(result.ValueOrDefault, statusCode: statusCode);
+        result.IsFailed ? result.ResultToError() : Json(result.ValueOrDefault, statusCode: statusCode);
 }

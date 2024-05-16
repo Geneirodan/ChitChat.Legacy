@@ -1,9 +1,9 @@
 using System.Reflection;
 using Common.Interfaces;
 using Common.MediatR.Attributes;
+using Common.Results;
 using FluentResults;
 using MediatR;
-using static System.Net.HttpStatusCode;
 
 namespace Common.MediatR.Behaviors;
 
@@ -20,7 +20,7 @@ public sealed class AuthorizationBehavior<TRequest, TResponse>(IUser user) : IPi
             return await next().ConfigureAwait(false);
 
         if (user is { Id: null })
-            return new TResponse().WithError(nameof(Unauthorized));
+            return ErrorResults.Unauthorized<TResponse>();
 
         var authorizeAttributesWithRoles =
             authorizeAttributes.Where(a => !string.IsNullOrWhiteSpace(a.Roles)).ToArray();
@@ -31,6 +31,8 @@ public sealed class AuthorizationBehavior<TRequest, TResponse>(IUser user) : IPi
         var authorized = authorizeAttributesWithRoles.SelectMany(a => a.Roles.Split(','))
             .Any(role => user.IsInRole(role.Trim()));
 
-        return authorized ? await next().ConfigureAwait(false) : new TResponse().WithError(nameof(Forbidden));
+        return authorized 
+            ? await next().ConfigureAwait(false) 
+            : ErrorResults.Forbidden<TResponse>();
     }
 }

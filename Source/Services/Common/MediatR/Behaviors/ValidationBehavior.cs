@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using Common.Results;
 using FluentResults;
 using FluentValidation;
 using MediatR;
@@ -22,7 +23,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
             .ConfigureAwait(false);
 
         var result = validationResults.Select(ValidationResultExtensions.ToFluentResult).Merge();
-
-        return result.IsSuccess ? await next().ConfigureAwait(false) : new TResponse().WithErrors(result.Errors);
+        
+        return result.IsSuccess ? await next().ConfigureAwait(false) : ErrorResults.Create<TResponse>(result.Errors);
     }
 }
