@@ -1,9 +1,9 @@
 using Common.Http;
 using MassTransit;
-using Profile.Application;
-using Profile.Infrastructure.Marten;
-using Profile.Infrastructure.MassTransit;
-using Profile.Presentation.Endpoints;
+using Profiles.Application;
+using Profiles.Infrastructure.Marten;
+using Profiles.Infrastructure.MassTransit;
+using Profiles.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -33,6 +33,7 @@ app.UseExceptionHandler()
     .UseAuthorization();
 
 app.MapProfile("api/v1/profile");
+app.MapContacts("api/v1/contacts");
 
 await app.RunAsync().ConfigureAwait(false);
 

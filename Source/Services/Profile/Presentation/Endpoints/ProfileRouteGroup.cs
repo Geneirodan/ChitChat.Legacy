@@ -1,32 +1,42 @@
 using Common.Http.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Profile.Application.Commands;
-using Profile.Application.Queries;
-using Profile.Presentation.Requests;
+using Profiles.Application.Commands;
+using Profiles.Application.Queries;
+using Profiles.Presentation.Requests;
 
-namespace Profile.Presentation.Endpoints;
+namespace Profiles.Presentation.Endpoints;
 
 public static class ProfileRouteGroup
 {
     public static void MapProfile(this IEndpointRouteBuilder app, string prefix)
     {
         var group = app.MapGroup(prefix).WithTags(prefix).RequireAuthorization();
-        group.MapGet(string.Empty, GetProfileById);
+        group.MapGet(string.Empty, GetProfile);
+        group.MapGet("{id:guid}", GetProfileById);
         group.MapPost(string.Empty, AddProfile);
         group.MapPut(string.Empty, EditProfile);
         group.MapPatch("Avatar", SetAvatar).DisableAntiforgery();
         group.MapDelete(string.Empty, DeleteProfile);
     }
 
-    private static async Task<IResult> GetProfileById(
+    private static async Task<IResult> GetProfile(
         [FromServices] IMediator mediator
     )
     {
         var query = new GetProfileQuery();
-        return await mediator.Send(query) is { } viewModel
-            ? TypedResults.Ok(viewModel)
-            : TypedResults.NotFound();
+        var result = await mediator.Send(query);
+        return result.ResultToResponse();
+    }
+
+    private static async Task<IResult> GetProfileById(
+        [FromRoute] Guid id,
+        [FromServices] IMediator mediator
+    )
+    {
+        var query = new GetProfileByIdQuery(id);
+        var result = await mediator.Send(query);
+        return result.ResultToResponse();
     }
 
     private static async Task<IResult> AddProfile(

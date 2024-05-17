@@ -3,7 +3,7 @@ using Common.Other;
 using Mapster;
 using MediatR;
 
-namespace Profile.Infrastructure.MassTransit.EventHandlers;
+namespace Profiles.Infrastructure.MassTransit.EventHandlers;
 
 public abstract class IntegrationEventHandler<TDomainEvent, TIntegrationEvent>(IPublishEndpoint endpoint)
     : INotificationHandler<TDomainEvent>

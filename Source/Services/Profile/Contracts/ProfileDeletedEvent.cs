@@ -1,6 +1,6 @@
 using Common.Other;
 
-namespace Profile.Contracts;
+namespace Profiles.Contracts;
 
 
 public sealed record ProfileDeletedEvent(Guid Id) : IntegrationEvent(Id);

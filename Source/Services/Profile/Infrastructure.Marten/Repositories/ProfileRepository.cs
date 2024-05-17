@@ -1,40 +1,14 @@
-using Profile.Application;
-using Profile.Application.Interfaces;
+using Profiles.Application.Interfaces;
+using Profiles.Application.ViewModels;
 
-namespace Profile.Infrastructure.Marten.Repositories;
+namespace Profiles.Infrastructure.Marten.Repositories;
 
-public sealed class ProfileRepository(IDocumentSession documentSession) : IProfileRepository
+public sealed class ProfileRepository(IDocumentSession documentSession) 
+    : MartenRepository<Domain.Profile, Aggregates.Profile>(documentSession), IProfileRepository
 {
-    public async Task<ProfileViewModel?> GetModelById(Guid id, CancellationToken cancellationToken = default) => 
-        await documentSession.Query<ProfileViewModel>().FirstOrDefaultAsync(x=>x.Id == id, cancellationToken);
-    
-    public async Task<Domain.Profile?> FindAsync(Guid id, CancellationToken cancellationToken = default)=>
-        await documentSession.Events.AggregateStreamAsync<Aggregates.Profile>(id, token: cancellationToken).ConfigureAwait(false);
+    private readonly IDocumentSession _documentSession = documentSession;
 
-    public Task AddAsync(Domain.Profile aggregate, CancellationToken cancellationToken = default)
-    {
-        var events = aggregate.DequeueUncommittedEvents();
-        documentSession.Events.StartStream<Aggregates.Profile>(aggregate.Id, events);
-        return Task.CompletedTask;
-    }
-
-    public Task UpdateAsync(Domain.Profile aggregate, CancellationToken cancellationToken = default)
-    {
-        var events = aggregate.DequeueUncommittedEvents();
-        var expectedVersion = aggregate.Version + events.Length;
-        documentSession.Events.Append(aggregate.Id, expectedVersion, events);
-        return Task.CompletedTask;
-    }
-
-    public Task DeleteAsync(Domain.Profile aggregate, CancellationToken cancellationToken = default)
-    {
-        var events = aggregate.DequeueUncommittedEvents();
-        var expectedVersion = aggregate.Version + events.Length;
-        documentSession.Events.Append(aggregate.Id, expectedVersion, events);
-        documentSession.Events.ArchiveStream(aggregate.Id);
-        return Task.CompletedTask;
-    }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken = default) => 
-        await documentSession.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    public async Task<ProfileViewModel?> GetModelByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        await _documentSession.Query<ProfileViewModel>()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 }

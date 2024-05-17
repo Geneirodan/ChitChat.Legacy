@@ -1,4 +1,7 @@
-namespace Profile.Infrastructure.MassTransit.EventHandlers;
+using Profiles.Domain;
+using Profiles.Contracts;
+
+namespace Profiles.Infrastructure.MassTransit.EventHandlers;
 
 public sealed class ProfileDeletedEventHandler(IPublishEndpoint endpoint)
-    : IntegrationEventHandler<Domain.Events.ProfileDeletedEvent, Contracts.ProfileDeletedEvent>(endpoint);
+    : IntegrationEventHandler<Profile.DeletedEvent, ProfileDeletedEvent>(endpoint);

@@ -3,9 +3,9 @@ using Common.Mediator.Attributes;
 using Common.Results;
 using FluentResults;
 using MediatR;
-using Profile.Application.Interfaces;
+using Profiles.Application.Interfaces;
 
-namespace Profile.Application.Commands;
+namespace Profiles.Application.Commands;
 
 [Authorize]
 public sealed record SetAvatarCommand(string AvatarUrl) : IRequest<Result>;

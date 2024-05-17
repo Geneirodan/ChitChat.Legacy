@@ -1,22 +1,22 @@
 using Marten.Events.Aggregation;
-using Profile.Application;
-using Profile.Domain.Events;
+using Profiles.Application.ViewModels;
+using Profiles.Domain;
 
-namespace Profile.Infrastructure.Marten.Projections;
+namespace Profiles.Infrastructure.Marten.Projections;
 
 public sealed class ProfileProjection : SingleStreamProjection<ProfileViewModel>
 {
     public ProfileProjection()
     {
-        CreateEvent<ProfileCreatedEvent>(Creator);
-        ProjectEvent<ProfileEditedEvent>(EditEvent);
-        DeleteEvent<ProfileDeletedEvent>();
+        CreateEvent<Profile.CreatedEvent>(Creator);
+        ProjectEvent<Profile.EditedEvent>(EditEvent);
+        DeleteEvent<Profile.DeletedEvent>();
     }
 
-    private static ProfileViewModel Creator(ProfileCreatedEvent e) => 
+    private static ProfileViewModel Creator(Profile.CreatedEvent e) => 
         new(e.Id, e.FirstName, e.LastName, string.Empty);
     
-    private static ProfileViewModel EditEvent(ProfileViewModel model, ProfileEditedEvent e) => 
+    private static ProfileViewModel EditEvent(ProfileViewModel model, Profile.EditedEvent e) => 
         model with { FirstName = e.FirstName, LastName = e.LastName, Bio = e.Bio };
 
 }

@@ -4,9 +4,9 @@ using Common.Results;
 using FluentResults;
 using FluentValidation;
 using MediatR;
-using Profile.Application.Interfaces;
+using Profiles.Application.Interfaces;
 
-namespace Profile.Application.Commands;
+namespace Profiles.Application.Commands;
 
 [Authorize]
 public sealed record EditProfileCommand(string FirstName, string LastName, string Bio) : IRequest<Result>;

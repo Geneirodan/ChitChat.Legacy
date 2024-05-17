@@ -1,8 +1,10 @@
 using Common.Abstractions;
+using Profiles.Application.ViewModels;
+using Profiles.Domain;
 
-namespace Profile.Application.Interfaces;
+namespace Profiles.Application.Interfaces;
 
-public interface IProfileRepository : IRepository<Domain.Profile, Guid>
+public interface IProfileRepository : IRepository<Profile, Guid>
 {
-    Task<ProfileViewModel?> GetModelById(Guid id, CancellationToken cancellationToken = default);
+    Task<ProfileViewModel?> GetModelByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

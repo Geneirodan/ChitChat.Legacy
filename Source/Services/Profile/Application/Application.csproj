@@ -2,9 +2,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Abstractions\Abstractions.csproj" />
     <ProjectReference Include="..\..\Common\Mediator\Mediator.csproj" />
+    <ProjectReference Include="..\..\Common\Other\Other.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoFilterer" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>
 </Project>

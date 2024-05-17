@@ -1,11 +1,11 @@
 using Marten.Events.Projections;
 using Microsoft.Extensions.DependencyInjection;
-using Profile.Application.Interfaces;
-using Profile.Infrastructure.Marten.Projections;
-using Profile.Infrastructure.Marten.Repositories;
+using Profiles.Application.Interfaces;
+using Profiles.Infrastructure.Marten.Projections;
+using Profiles.Infrastructure.Marten.Repositories;
 using Weasel.Core;
 
-namespace Profile.Infrastructure.Marten;
+namespace Profiles.Infrastructure.Marten;
 
 public static class DependencyInjection
 {
@@ -17,6 +17,7 @@ public static class DependencyInjection
                 options.Connection(connectionString);
                 options.UseSystemTextJsonForSerialization(EnumStorage.AsString,Casing.CamelCase);
                 options.Projections.Add<ProfileProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<ContactProjection>(ProjectionLifecycle.Inline);
             })
             .UseLightweightSessions()
             .OptimizeArtifactWorkflow();
@@ -26,6 +27,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddRepositories(this IServiceCollection services) =>
         services
-            .AddScoped<IProfileRepository, ProfileRepository>();
+            .AddScoped<IProfileRepository, ProfileRepository>()
+            .AddScoped<IContactRepository, ContactRepository>();
 
 }
