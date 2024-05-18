@@ -4,6 +4,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea
-/Source/Services/Identity/Migrations
-/Source/Services/Messages/Commands/Presentation/Internal
-/Source/Services/Profile/Presentation/Internal/
+/Services/Identity/Migrations
+/Services/Messages/Commands/Presentation/Internal
+/Services/Profile/Presentation/Internal/

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Ardalis.Result" />
+        <PackageReference Include="Ardalis.Specification" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="Mapster"/>
+        <PackageReference Include="MediatR"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Mediator\Mediator.csproj" />
+        <ProjectReference Include="..\..\Contracts\Contracts.csproj"/>
+        <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="Application.Tests" />
+    </ItemGroup>
+</Project>

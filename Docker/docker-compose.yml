@@ -3,7 +3,7 @@
   gateway:
     image: ${DOCKER_REGISTRY-}gateway
     build:
-      context: ../Source/Services/Nginx
+      context: ../Services/Nginx
       dockerfile: Dockerfile
     depends_on:
       - identity
@@ -14,7 +14,7 @@
   messages.hub:
     image: ${DOCKER_REGISTRY-}messages.hub
     build:
-      context: ../Source/Services/Messages
+      context: ../Services/Messages
       dockerfile: SignalRNotifier/Dockerfile
     depends_on:
       - rabbitmq
@@ -22,7 +22,7 @@
   messages.queries:
     image: ${DOCKER_REGISTRY-}messages.queries
     build:
-      context: ../Source/Services/Messages/Queries
+      context: ../Services/Messages/Queries
       dockerfile: Presentation/Dockerfile
     depends_on:
       - elasticsearch
@@ -31,7 +31,7 @@
   messages.commands:
     image: ${DOCKER_REGISTRY-}messages.commands
     build:
-      context: ../Source/Services/Messages/Commands
+      context: ../Services/Messages/Commands
       dockerfile: Presentation/Dockerfile
     depends_on:
       - postgres
@@ -40,7 +40,7 @@
   profile:
     image: ${DOCKER_REGISTRY-}profile
     build:
-      context: ../Source/Services/Profile
+      context: ../Services/Profile
       dockerfile: Presentation/Dockerfile
     depends_on:
       - postgres
@@ -48,7 +48,7 @@
   identity:
     image: ${DOCKER_REGISTRY-}identity
     build:
-      context: ../Source/Services/Identity
+      context: ../Services/Identity
       dockerfile: Dockerfile
     depends_on:
       - postgres
