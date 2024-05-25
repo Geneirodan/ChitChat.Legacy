@@ -7,63 +7,69 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static System.String;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Identity.Endpoints;
 
+using RegisterResponse = Results<Created, ValidationProblem>;
+using LoginResponse = Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>;
+using RefreshResponse = Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>;
+
 internal static class AuthEndpoints
 {
-    internal static void MapAuth(this IEndpointRouteBuilder endpoints)
+    private const string GroupName = "auth";
+
+    internal static void MapAuthEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        const string groupName = "Auth";
-        var routeGroup = endpoints.MapGroup(groupName).WithTags(groupName);
-        routeGroup.MapPost(nameof(Register), Register);
-        routeGroup.MapPost(nameof(Login), Login);
-        routeGroup.MapPost(nameof(Refresh), Refresh);
+        var routeGroup = endpoints.MapGroup(GroupName).WithTags(GroupName);
+        routeGroup.MapPost("/register", RegisterAsync);
+        routeGroup.MapPost("/login", LoginAsync);
+        routeGroup.MapPost("/refresh", RefreshAsync);
     }
 
-    private static async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>> Refresh(
+    private static async Task<RefreshResponse> RefreshAsync(
         [FromBody] RefreshRequest request,
-        [FromServices] SignInManager<User> signInManager,
-        [FromServices] IOptionsMonitor<BearerTokenOptions> bearerTokenOptions,
-        [FromServices] TimeProvider timeProvider,
         [FromServices] ITokenService tokenService
     )
     {
         var (accessToken, refreshToken) = request;
-        return await tokenService.ValidateExpiredTokens(accessToken, refreshToken).ConfigureAwait(false);
+        return await tokenService.ValidateExpiredTokens(accessToken, refreshToken);
     }
 
-    private static async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>> Login(
+    private static async Task<LoginResponse> LoginAsync(
+        [FromQuery] bool rememberClient,
+        [FromQuery] bool isPersistent,
         [FromBody] LoginRequest request,
         [FromServices] SignInManager<User> signInManager,
-        [FromServices] ITokenService tokenService
-    )
+        [FromServices] ITokenService tokenService)
     {
-        var (username, password, isPersistent, twoFactorCode, twoFactorRecoveryCode) = request;
+        var (username, password, twoFactorCode, twoFactorRecoveryCode) = request;
         var userManager = signInManager.UserManager;
 
-        var user = await userManager.FindByEmailAsync(username).ConfigureAwait(false) ?? await userManager.FindByNameAsync(username).ConfigureAwait(false);
+        var user = await userManager.FindByEmailAsync(username) ?? await userManager.FindByNameAsync(username);
         if (user is null)
             return TypedResults.Unauthorized();
 
-        var result = await signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure: true).ConfigureAwait(false);
+        var result = await signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure: true);
 
         if (!result.RequiresTwoFactor)
             return result.Succeeded
-                ? await tokenService.GenerateTokens(user).ConfigureAwait(false)
+                ? await tokenService.GenerateTokens(user)
                 : TypedResults.Unauthorized();
-        if (!string.IsNullOrEmpty(twoFactorCode))
+
+        if (!IsNullOrEmpty(twoFactorCode))
             result = await signInManager.TwoFactorAuthenticatorSignInAsync(twoFactorCode, isPersistent,
-                isPersistent).ConfigureAwait(false);
-        else if (!string.IsNullOrEmpty(twoFactorRecoveryCode))
-            result = await signInManager.TwoFactorRecoveryCodeSignInAsync(twoFactorRecoveryCode).ConfigureAwait(false);
+                rememberClient);
+        else if (!IsNullOrEmpty(twoFactorRecoveryCode))
+            result = await signInManager.TwoFactorRecoveryCodeSignInAsync(twoFactorRecoveryCode);
 
         return result.Succeeded
-            ? await tokenService.GenerateTokens(user).ConfigureAwait(false)
+            ? await tokenService.GenerateTokens(user)
             : TypedResults.Unauthorized();
     }
 
-    private static async Task<Results<Created, ValidationProblem>> Register(
+    private static async Task<RegisterResponse> RegisterAsync(
         [FromBody] RegisterRequest request,
         [FromServices] UserManager<User> userManager,
         [FromServices] IEmailSender emailSender)
@@ -71,13 +77,13 @@ internal static class AuthEndpoints
         var (username, email, password, returnUrl) = request;
 
         var user = new User { Email = email, UserName = username };
-        var result = await userManager.CreateAsync(user, password).ConfigureAwait(false);
+        var result = await userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
             return result.ToValidationProblem();
 
-        var code = await userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
-        await emailSender.SendRegisterConfirmationAsync(email, code, returnUrl).ConfigureAwait(false);
+        var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+        await emailSender.SendRegisterConfirmationAsync(email, code, returnUrl);
 
         return TypedResults.Created();
     }

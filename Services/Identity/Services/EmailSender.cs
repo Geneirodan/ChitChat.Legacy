@@ -21,10 +21,10 @@ internal sealed class EmailSender(ILogger<EmailSender> logger, IOptions<EmailOpt
             emailMessage.To.Add(new MailboxAddress(string.Empty, email));
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, useSsl: true).ConfigureAwait(false);
-            await client.AuthenticateAsync(_emailOptions.Username, _emailOptions.Password).ConfigureAwait(false);
-            await client.SendAsync(emailMessage).ConfigureAwait(false);
-            await client.DisconnectAsync(true).ConfigureAwait(false);
+            await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, useSsl: true);
+            await client.AuthenticateAsync(_emailOptions.Username, _emailOptions.Password);
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
         }
         catch (Exception ex)
         {
@@ -32,7 +32,7 @@ internal sealed class EmailSender(ILogger<EmailSender> logger, IOptions<EmailOpt
         }
     }
 
-    public Task SendRegisterConfirmationAsync(string email, string code, string returnUrl)=>
+    public Task SendRegisterConfirmationAsync(string email, string code, string returnUrl) =>
         SendTemplate(email, code, returnUrl, "Register.html", "Registration");
 
     public Task SendPasswordResetCodeAsync(string email, string code, string returnUrl) =>
@@ -44,9 +44,9 @@ internal sealed class EmailSender(ILogger<EmailSender> logger, IOptions<EmailOpt
     private async Task SendTemplate(string email, string code, string returnUrl, string filename, string subject)
     {
         var path = Path.Combine(_emailOptions.TemplatesFolder, filename);
-        var template = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+        var template = await File.ReadAllTextAsync(path);
         var link = $"{returnUrl}?email={HtmlEncoder.Default.Encode(email)}&code={HtmlEncoder.Default.Encode(code)}";
         var htmlMessage = string.Format(template, link);
-        await SendEmailAsync(email, subject, htmlMessage).ConfigureAwait(false);
+        await SendEmailAsync(email, subject, htmlMessage);
     }
 }

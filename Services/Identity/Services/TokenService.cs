@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using static System.StringComparison;
+using static Microsoft.IdentityModel.Tokens.SecurityAlgorithms;
 
 namespace Identity.Services;
 
@@ -39,7 +41,7 @@ internal sealed class TokenService(
             audience: _jwtOptions.Audience,
             claims: claims,
             expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_expirationOptions.AccessToken)),
-            signingCredentials: new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(_symmetricSecurityKey, HmacSha256));
 
         var refreshToken = GenerateRefreshToken();
 
@@ -49,7 +51,7 @@ internal sealed class TokenService(
             Value = refreshToken,
             ExpiresAt = timeProvider.GetUtcNow().AddDays(_expirationOptions.RefreshToken)
         });
-        if (await context.SaveChangesAsync().ConfigureAwait(false) == 0)
+        if (await context.SaveChangesAsync() == 0)
             return TypedResults.Unauthorized();
 
         var accessTokenResponse = new AccessTokenResponse
@@ -64,22 +66,24 @@ internal sealed class TokenService(
     public async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult>> ValidateExpiredTokens(
         string accessToken, string refreshToken)
     {
-        if (GetPrincipalFromExpiredToken(accessToken) is not { } principal) 
-            return TypedResults.Unauthorized();
-        
-        if (await userManager.GetUserAsync(principal).ConfigureAwait(false) is not { } user)
+        var principal = GetPrincipalFromExpiredToken(accessToken);
+        if (principal is null)
             return TypedResults.Unauthorized();
 
-        var refreshTokenEntity = await context.RefreshTokens
-            .FirstOrDefaultAsync(x => x.UserId == user.Id && x.Value == refreshToken).ConfigureAwait(false);
+        var user = await userManager.GetUserAsync(principal);
+        if (user is null)
+            return TypedResults.Unauthorized();
+
+        var refreshTokenEntity =
+            await context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Value == refreshToken);
 
         if (refreshTokenEntity is null || refreshTokenEntity.ExpiresAt <= timeProvider.GetUtcNow())
             return TypedResults.Unauthorized();
 
         context.RefreshTokens.Remove(refreshTokenEntity);
-        await context.SaveChangesAsync().ConfigureAwait(false);
+        await context.SaveChangesAsync();
 
-        return await GenerateTokens(user).ConfigureAwait(false);
+        return await GenerateTokens(user);
     }
 
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
@@ -94,9 +98,9 @@ internal sealed class TokenService(
         };
         var principal = new JwtSecurityTokenHandler()
             .ValidateToken(token, tokenValidationParameters, out var securityToken);
-        
+
         return securityToken is JwtSecurityToken jwtSecurityToken
-               && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase)
+               && jwtSecurityToken.Header.Alg.Equals(HmacSha256, InvariantCultureIgnoreCase)
             ? principal
             : null;
     }

@@ -3,12 +3,12 @@ using Microsoft.Extensions.Options;
 
 namespace Identity.Options.Configurations;
 
-internal class IdentityOptionsConfiguration : IConfigureOptions<IdentityOptions>
+internal sealed class IdentityOptionsConfiguration : IConfigureOptions<IdentityOptions>
 {
     public void Configure(IdentityOptions options)
     {
         options.User.RequireUniqueEmail = true;
-        options.User.AllowedUserNameCharacters = options.User.AllowedUserNameCharacters.Replace("@", string.Empty);
+        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
         options.Password.RequireNonAlphanumeric = false;
         options.SignIn.RequireConfirmedEmail = true;
     }

@@ -12,28 +12,29 @@ namespace Identity.Endpoints;
 
 internal static class PasswordEndpoints
 {
-    internal static void MapPassword(this IEndpointRouteBuilder endpoints)
+    internal static void MapPasswordEndpoints(this IEndpointRouteBuilder endpoints)
     {
         const string groupName = "Password";
         var routeGroup = endpoints.MapGroup(groupName).WithTags(groupName);
-        routeGroup.MapPost(nameof(Forgot), Forgot);
-        routeGroup.MapPost(nameof(Reset), Reset);
+        routeGroup.MapPost("/forgot", ForgotPasswordAsync);
+        routeGroup.MapPost("/reset", ResetPasswordAsync).RequireAuthorization();
     }
 
-    private static async Task<Results<Ok, ValidationProblem>> Reset(
-        [FromBody] ResetPasswordRequest resetRequest,
+    private static async Task<Results<Ok, ValidationProblem>> ResetPasswordAsync(
+        [FromBody] ResetPasswordRequest request,
         [FromServices] UserManager<User> userManager
     )
     {
-        var user = await userManager.FindByEmailAsync(resetRequest.Email).ConfigureAwait(false);
+        var (email, resetCode, newPassword) = request;
+        var user = await userManager.FindByEmailAsync(email);
 
         IdentityResult result;
-        if (user is not null && await userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false))
+        if (user is not null && await userManager.IsEmailConfirmedAsync(user))
         {
             try
             {
-                var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetRequest.ResetCode));
-                result = await userManager.ResetPasswordAsync(user, code, resetRequest.NewPassword).ConfigureAwait(false);
+                var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(resetCode));
+                result = await userManager.ResetPasswordAsync(user, code, newPassword);
             }
             catch (FormatException)
             {
@@ -41,26 +42,26 @@ internal static class PasswordEndpoints
             }
         }
         else
-            result = IdentityResult.Failed(userManager.ErrorDescriber.InvalidToken());
+            result = IdentityResult.Failed(userManager.ErrorDescriber.InvalidEmail(email));
 
         return result.Succeeded ? TypedResults.Ok() : result.ToValidationProblem();
     }
 
-    private static async Task<Results<Ok, ValidationProblem>> Forgot(
+    private static async Task<Results<Ok, ValidationProblem>> ForgotPasswordAsync(
         [FromBody] ForgotPasswordRequest request,
         [FromServices] UserManager<User> userManager,
         [FromServices] IEmailSender emailSender
     )
     {
         var (email, resetUrl) = request;
-        var user = await userManager.FindByEmailAsync(email).ConfigureAwait(false);
+        var user = await userManager.FindByEmailAsync(email);
 
-        if (user is null || !await userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false)) 
+        if (user is null || !await userManager.IsEmailConfirmedAsync(user)) 
             return TypedResults.Ok();
 
-        var code = await userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+        var code = await userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        await emailSender.SendPasswordResetCodeAsync(email, code, resetUrl).ConfigureAwait(false);
+        await emailSender.SendPasswordResetCodeAsync(email, code, resetUrl);
         return TypedResults.Ok();
     }
 }

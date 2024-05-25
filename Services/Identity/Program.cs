@@ -17,7 +17,7 @@ var configuration = builder.Configuration;
 
 var connectionString = configuration.GetConnectionString("Database");
 services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString))
-    .AddScoped<ApplicationContextInitializer>();
+    .AddScoped<ApplicationContext.Initializer>();
 
 services.AddHealthChecks()
     .AddDbContextCheck<ApplicationContext>();
@@ -41,7 +41,7 @@ services
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
-    await scope.ServiceProvider.GetRequiredService<ApplicationContextInitializer>().SeedAsync().ConfigureAwait(false);
+    await scope.ServiceProvider.GetRequiredService<ApplicationContext.Initializer>().SeedAsync();
 
 if (app.Environment.IsDevelopment())
 {
@@ -54,8 +54,8 @@ app.UseExceptionHandler()
     .UseAuthentication()
     .UseAuthorization();
 
-app.MapGroup("api/v1").MapIdentity();
+app.MapGroup("api/v1").MapIdentityEndpoints();
 
-await app.RunAsync().ConfigureAwait(false);
+await app.RunAsync();
 
 public partial class Program;

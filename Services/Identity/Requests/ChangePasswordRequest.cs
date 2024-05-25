@@ -10,8 +10,11 @@ internal sealed record ChangePasswordRequest(string NewPassword, string OldPassw
 {
     internal class Validator : AbstractValidator<ChangePasswordRequest>
     {
-        public Validator(IOptions<IdentityOptions> options) => 
+        public Validator(IOptions<IdentityOptions> options)
+        {
             RuleFor(x => x.NewPassword).IsValidPassword(options.Value.Password);
+            RuleFor(x => x.OldPassword).NotEmpty();
+        }
     }
     
 }

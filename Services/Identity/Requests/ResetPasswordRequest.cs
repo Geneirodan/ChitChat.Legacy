@@ -10,7 +10,11 @@ internal sealed record ResetPasswordRequest(string Email, string ResetCode, stri
 {
     internal class Validator : AbstractValidator<ResetPasswordRequest>
     {
-        public Validator(IOptions<IdentityOptions> options) => 
+        public Validator(IOptions<IdentityOptions> options)
+        {
+            RuleFor(x => x.Email).IsValidEmail();
+            RuleFor(x => x.ResetCode).NotEmpty();
             RuleFor(x => x.NewPassword).IsValidPassword(options.Value.Password);
+        }
     }
 }

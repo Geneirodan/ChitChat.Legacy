@@ -4,12 +4,13 @@ namespace Identity.Endpoints;
 
 internal static class IdentityEndpoints
 {
-    internal static void MapIdentity(this IEndpointRouteBuilder endpoints)
+    internal static void MapIdentityEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup(string.Empty).AddFluentValidationAutoValidation();
-        group.MapAuth();
-        group.MapEmail();
-        group.MapPassword();
-        group.MapAccount();
+        group.MapAuthEndpoints();
+        group.MapEmailEndpoints();
+        group.MapPasswordEndpoints();
+        group.MapAccountEndpoints();
+        group.MapTwoFactorEndpoints();
     }
 }

@@ -14,6 +14,8 @@ internal sealed record RegisterRequest(string Username, string Email, string Pas
             RuleFor(x => x.Email).IsValidEmail();
             RuleFor(x => x.Username).IsValidUsername();
             RuleFor(x => x.Password).IsValidPassword(options.Value.Password);
+            if (options.Value.SignIn.RequireConfirmedEmail)
+                RuleFor(x => x.ConfirmUrl).NotEmpty();
         }
     }
 }
