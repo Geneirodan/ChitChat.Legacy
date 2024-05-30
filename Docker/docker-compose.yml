@@ -15,7 +15,7 @@
     image: ${DOCKER_REGISTRY-}messages.hub
     build:
       context: ../Services/Messages
-      dockerfile: SignalRNotifier/Dockerfile
+      dockerfile: Messages.SignalRNotifier/Dockerfile
     depends_on:
       - rabbitmq
   
@@ -23,7 +23,7 @@
     image: ${DOCKER_REGISTRY-}messages.queries
     build:
       context: ../Services/Messages/Queries
-      dockerfile: Presentation/Dockerfile
+      dockerfile: Messages.Queries.WebApi/Dockerfile
     depends_on:
       - elasticsearch
       - rabbitmq
@@ -32,7 +32,7 @@
     image: ${DOCKER_REGISTRY-}messages.commands
     build:
       context: ../Services/Messages/Commands
-      dockerfile: Presentation/Dockerfile
+      dockerfile: Messages.Commands.WebAPI/Dockerfile
     depends_on:
       - postgres
       - rabbitmq
@@ -40,8 +40,8 @@
   profile:
     image: ${DOCKER_REGISTRY-}profile
     build:
-      context: ../Services/Profile
-      dockerfile: Presentation/Dockerfile
+      context: ../Services/Profiles
+      dockerfile: Profiles.WebAPI/Dockerfile
     depends_on:
       - postgres
   

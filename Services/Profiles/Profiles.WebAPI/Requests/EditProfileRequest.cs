@@ -1,0 +1,4 @@
+namespace Profiles.WebAPI.Requests;
+
+
+public sealed record EditProfileRequest(string FirstName, string LastName, string Bio);

@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using static System.String;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Identity.Endpoints;
 

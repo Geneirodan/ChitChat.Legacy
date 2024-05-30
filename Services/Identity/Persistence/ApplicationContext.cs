@@ -34,7 +34,7 @@ internal sealed class ApplicationContext(DbContextOptions options) : IdentityDbC
 
         private async Task TrySeedAsync()
         {
-            foreach (var role in Common.Other.Roles.All)
+            foreach (var role in Common.Roles.All)
                 if (await roleManager.FindByNameAsync(role) is null)
                     await roleManager.CreateAsync(new Role { Name = role });
 
@@ -52,7 +52,7 @@ internal sealed class ApplicationContext(DbContextOptions options) : IdentityDbC
 
             var token = await userManager.GenerateEmailConfirmationTokenAsync(admin);
             await userManager.ConfirmEmailAsync(admin, token);
-            await userManager.AddToRoleAsync(admin, Common.Other.Roles.Admin);
+            await userManager.AddToRoleAsync(admin, Common.Roles.Admin);
         }
     }
 }
