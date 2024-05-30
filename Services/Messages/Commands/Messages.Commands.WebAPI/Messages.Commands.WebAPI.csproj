@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <ItemGroup>
+        <Content Include="..\..\..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Common.Http\Common.Http.csproj" />
+        <ProjectReference Include="..\Messages.Commands.Infrastructure.Marten\Messages.Commands.Infrastructure.Marten.csproj" />
+        <ProjectReference Include="..\Messages.Commands.Infrastructure.MassTransit\Messages.Commands.Infrastructure.MassTransit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ardalis.Result.AspNetCore" />
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Integration.Tests" />
+    </ItemGroup>
+</Project>

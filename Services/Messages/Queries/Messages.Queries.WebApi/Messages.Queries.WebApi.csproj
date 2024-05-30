@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <ItemGroup>
+        <Content Include="..\..\..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ardalis.Result.AspNetCore" />
+        <PackageReference Include="GraphQL.AspNet" />
+        <PackageReference Include="GraphQL.Server.Ui.GraphiQL" />
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Common.Http\Common.Http.csproj" />
+      <ProjectReference Include="..\Messages.Queries.Application\Messages.Queries.Application.csproj" />
+      <ProjectReference Include="..\Messages.Queries.Infrastructure.Elastic\Messages.Queries.Infrastructure.Elastic.csproj" />
+      <ProjectReference Include="..\Messages.Queries.Infrastructure.MassTransit\Messages.Queries.Infrastructure.MassTransit.csproj" />
+    </ItemGroup>
+
+</Project>

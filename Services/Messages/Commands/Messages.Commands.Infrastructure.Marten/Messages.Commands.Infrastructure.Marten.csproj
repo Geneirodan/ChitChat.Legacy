@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <PackageReference Include="Marten"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Common.Marten\Common.Marten.csproj" />
+        <ProjectReference Include="..\Messages.Commands.Application\Messages.Commands.Application.csproj" />
+    </ItemGroup>
+</Project>

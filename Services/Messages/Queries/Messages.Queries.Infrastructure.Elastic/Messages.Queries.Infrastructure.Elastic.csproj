@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Elastic.Clients.Elasticsearch"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Messages.Queries.Domain\Messages.Queries.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

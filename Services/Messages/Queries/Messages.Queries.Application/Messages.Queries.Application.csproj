@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Common.MediatR\Common.MediatR.csproj" />
+      <ProjectReference Include="..\..\Messages.Contracts\Messages.Contracts.csproj" />
+      <ProjectReference Include="..\Messages.Queries.Domain\Messages.Queries.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -35,6 +35,7 @@ services
     .AddProblemDetails()
     .Configure<ExpirationOptions>(configuration.GetSection("Expiration"))
     .Configure<EmailOptions>(configuration.GetSection("EmailSettings"))
+    .Configure<AdminOptions>(configuration.GetSection("Admin"))
     .AddScoped<ITokenService, TokenService>()
     .AddTransient<IEmailSender, EmailSender>();
 
@@ -58,4 +59,7 @@ app.MapGroup("api/v1").MapIdentityEndpoints();
 
 await app.RunAsync();
 
-public partial class Program;
+namespace Identity
+{
+    public partial class Program;
+}

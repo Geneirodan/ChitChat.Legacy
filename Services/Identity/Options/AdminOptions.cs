@@ -1,5 +1,3 @@
-using static Common.Other.Roles;
-
 namespace Identity.Options;
 
 internal sealed record AdminOptions
